@@ -22,9 +22,11 @@ def test_parse_real():
 def test_parse_penalties():
     penalties_parsed = parse_penalty_file("../data/BLOSUM62.txt")
     assert len(penalties_parsed) == 24
+    print(penalties_parsed['*'])
     assert penalties_parsed['W']['W'] == 11
     assert penalties_parsed['A']['A'] == 4
     assert penalties_parsed['M']['N'] == -2
     assert penalties_parsed['A']['Q'] == -1
     assert penalties_parsed['T']['B'] == -1
-    assert penalties_parsed['*']['*'] == -4
+    assert penalties_parsed['*']['*'] == 1
+    assert penalties_parsed['A']['*'] == -4
