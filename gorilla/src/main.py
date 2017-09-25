@@ -65,7 +65,7 @@ def parse_penalty_file(filename):
             # set new dict
             penalty_dict[line_space_cleaned[0]] = {}
             for x in range(1, len(line_space_cleaned)):
-                penalty_dict[line_space_cleaned[0]][map_array[(int(x)-1)]] = line_space_cleaned[x]
+                penalty_dict[line_space_cleaned[0]][map_array[(int(x)-1)]] = int(line_space_cleaned[x])
 
             line_count += 1
     return penalty_dict
