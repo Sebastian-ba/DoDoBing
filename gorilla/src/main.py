@@ -112,6 +112,7 @@ def space_efficient_alignment(dna_1,dna_2):
             #B[i,1] = min(B[i-1,0], delta + B[i-1,1], delta + B[i,0])
         #move column1 of B to coloumn 0 to make room for next iteration
             # update B[i,0]=B[i,1] for each i
+    pass
 
 def backward_space_efficient_alignment():
     pass
@@ -119,11 +120,11 @@ def backward_space_efficient_alignment():
 def devide_and_conquer_alignment(dna_1, dna_2, all_penalty):
     # let m be the number of symbols in dna_1
     # let n be the number of symbols in dna_2
-    # if m <= 2 or n <= 2 then 
+    # if m <= 2 or n <= 2 then
         # compute optimal alignment using Allignment(X,Y)
     # call Space-Efficient-Alignment (X,Y[1:n/2])
     # Call Backward_Space_efficient_alignment(X,Y[n/2 +1:n])
-    
+
     # Let q be the index minimizing f(q, n/2)+ g(q, n/2)
     # add (q,n/2) to global list P
 
@@ -138,7 +139,7 @@ def main_algo(all_dna, all_penalty):
             if i != j:
                 res = devide_and_conquer_alignment(all_dna[i], all_dna[j], all_penalty)
                 output(res)
-                
+
 '''Algorithm'''
 
 '''RUN CODE'''
@@ -148,6 +149,5 @@ if __name__ == "__main__":
         all_dna = parse_dna_file(args[1])
         all_penalty = parse_penalty_file(args[2])
         #main_algo(all_dna, all_penalty)
-        
-'''END CODE'''
 
+'''END CODE'''
