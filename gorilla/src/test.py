@@ -15,6 +15,12 @@ def test_parse_real():
 def test_parse_penalties():
     assert len(penalties_parsed) == 24
     assert penalties_parsed['W']['W'] == 11
+    assert penalties_parsed['A']['A'] == 4
+    assert penalties_parsed['M']['N'] == -2
+    assert penalties_parsed['A']['Q'] == -1
+    assert penalties_parsed['T']['B'] == -1
+    assert penalties_parsed['*']['*'] == 1
+    assert penalties_parsed['A']['*'] == -4
 
 def test_board_1_alg():
     result = alignment(("First", "AFCD"), ("Second", "BQXF"), penalties_parsed)
@@ -93,4 +99,3 @@ def test_space_efficient8():
     result = space_efficient_alignment(("First", "A"), ("Second", "BQX"), penalties_parsed)
     assert result[1] == "--X"
     assert result[0] == -8
-
