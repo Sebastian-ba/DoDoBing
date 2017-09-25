@@ -23,3 +23,14 @@ def test_parse_penalties():
     penalties_parsed = parse_penalty_file("../data/BLOSUM62.txt")
     assert len(penalties_parsed) == 24
     assert penalties_parsed['W']['W'] == 11
+
+def testBoard1Alg():
+    penalties_parsed = parse_penalty_file("../data/BLOSUM62.txt")
+    result = Alignment(("First", "AFCD"), ("Second", "BQXF"), penalties_parsed)
+    sresult = result[0]
+    assert sresult == -10
+
+def testBoard2Alg():
+    penalties_parsed = parse_penalty_file("../data/BLOSUM62.txt")
+    result = Alignment(("First", "AFCD"), ("Second", "BQXF"), penalties_parsed)
+    assert result[1] == "BQXF"

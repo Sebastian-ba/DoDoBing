@@ -83,24 +83,30 @@ def output(result):
 '''Algorithm'''
 def Alignment(dna_1,dna_2, cost_dict):
     s = ""
-    a = [len(dna_1[1]),len(dna_2[1])]
-    a[0,0] = {0,""}
-    for i in range(1, len(dna_1[1])):
-        a[i,0] = {-4 * i, "-" + a[i-1,0][1]}
-    for j in range(1, len(dna_2)[1]):
-        a[0,j] = {-4 * j, "-" + a[0,j-1][1]}
-    for j in range(1,len(dna_2[1])):
-        for i in range(1,len(dna_1[1])):
-            left = -4 + a[i,j-1][0]
-            down = -4 + a[i-1,j][0]
-            cross = cost_dict[dna_1[1][i]][dna_2[1][j]] + a[i-1,j-1][0]
+    a = [] #[[len(dna_1[1])]][[len(dna_2[1])]]
+    #a[0][0] = (0,"")
+    for i in range(0, len(dna_1[1])+1):
+        a.append([])
+        for j in range(0, len(dna_2[1])+1):
+            a[i].append((0,""))
+
+
+    for i in range(1, len(dna_1[1])+1):
+        a[i][0] = (-4 * i, "-" + a[i-1][0][1])
+    for j in range(1, len(dna_2[1])+1):
+        a[0][j] = (-4 * j, "-" + a[0][j-1][1])
+    for j in range(1,len(dna_2[1])+1):
+        for i in range(1,len(dna_1[1])+1):
+            left = -4 + a[i][j-1][0]
+            down = -4 + a[i-1][j][0]
+            cross = cost_dict[dna_1[1][i-1]][dna_2[1][j-1]] + a[i-1][j-1][0]
             if(left > down and left > cross):
-                a[i,j] = {left, a[i,j-1][1] + "-"}
+                a[i][j] = (left, a[i][j-1][1] + "-")
             elif down > left and down > cross:
-                a[i,j] = {down , a[i-1,j][1] + "-"}
+                a[i][j] = (down , a[i-1][j][1] + "-")
             else :
-                a[i,j] = {cross , a[i-1,j-1] + dna_2[j]}
-    return a[len(dna_1[1])-1,len(dna_2[1])-1]
+                a[i][j] = (cross , a[i-1][j-1][1] + dna_2[1][j-1])
+    return a[len(dna_1[1])][len(dna_2[1])]
 
 
 def space_efficient_alignment(dna_1,dna_2):
