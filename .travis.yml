@@ -9,4 +9,6 @@ python:
 install:
   - pip install nose
 script:
+  - nosetests -vd -w matching/Python testUtils.py
+  - nosetests -vd -w closest-points/src testParse.py
   - nosetests -vd -w gorilla/src test.py
