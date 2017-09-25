@@ -75,8 +75,10 @@ def parse_penalty_file(filename):
 
 '''Helper methods'''
 
-def output(result):
-    pass
+def output(dna_1, dna_2, result):
+    print(dna_1[0] + "--" + dna_2[0] + ": " +  str(result[0]))
+    print(dna_1[1])
+    print(result[1])
 
 '''Helper methods end'''
 
@@ -153,8 +155,8 @@ def main_algo(all_dna, all_penalty):
     for i in range(len(all_dna)):
         for j in range (i, len(all_dna)):
             if i != j:
-                res = devide_and_conquer_alignment(all_dna[i], all_dna[j], all_penalty)
-                output(res)
+                res = space_efficient_alignment(all_dna[j], all_dna[i], all_penalty)
+                output(all_dna[i], all_dna[j], res)
 
 '''Algorithm'''
 
@@ -164,6 +166,6 @@ if __name__ == "__main__":
     if len(args) > 2:
         all_dna = parse_dna_file(args[1])
         all_penalty = parse_penalty_file(args[2])
-        #main_algo(all_dna, all_penalty)
+        main_algo(all_dna, all_penalty)
 
 '''END CODE'''

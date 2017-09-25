@@ -93,3 +93,4 @@ def test_space_efficient8():
     result = space_efficient_alignment(("First", "A"), ("Second", "BQX"), penalties_parsed)
     assert result[1] == "--X"
     assert result[0] == -8
+
