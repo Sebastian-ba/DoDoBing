@@ -75,44 +75,62 @@ def parse_penalty_file(filename):
 
 '''Helper methods'''
 
-def output(result):
-    pass
+def output(dna_1, dna_2, result):
+    print(dna_1[0] + "--" + dna_2[0] + ": " +  str(result[0]))
+    print(dna_1[1])
+    print(result[1])
 
 '''Helper methods end'''
 
 '''Algorithm'''
-def Alignment(dna_1,dna_2, cost_dict):
-    s = ""
-    a = [len(dna_1[1]),len(dna_2[1])]
-    a[0,0] = {0,""}
-    for i in range(1, len(dna_1[1])):
-        a[i,0] = {-4 * i, "-" + a[i-1,0][1]}
-    for j in range(1, len(dna_2)[1]):
-        a[0,j] = {-4 * j, "-" + a[0,j-1][1]}
-    for j in range(1,len(dna_2[1])):
-        for i in range(1,len(dna_1[1])):
-            left = -4 + a[i,j-1][0]
-            down = -4 + a[i-1,j][0]
-            cross = cost_dict[dna_1[1][i]][dna_2[1][j]] + a[i-1,j-1][0]
+def alignment(dna_1, dna_2, all_penalty):
+    a = []
+    for i in range(0, len(dna_1[1])+1):
+        a.append([])
+        for j in range(0, len(dna_2[1])+1):
+            a[i].append((0,""))
+
+
+    for i in range(1, len(dna_1[1])+1):
+        a[i][0] = (-4 * i, "-" + a[i-1][0][1])
+    for j in range(1, len(dna_2[1])+1):
+        a[0][j] = (-4 * j, "-" + a[0][j-1][1])
+    for j in range(1,len(dna_2[1])+1):
+        for i in range(1,len(dna_1[1])+1):
+            left = -4 + a[i][j-1][0]
+            down = -4 + a[i-1][j][0]
+            cross = all_penalty[dna_1[1][i-1]][dna_2[1][j-1]] + a[i-1][j-1][0]
             if(left > down and left > cross):
-                a[i,j] = {left, a[i,j-1][1] + "-"}
+                a[i][j] = (left, a[i][j-1][1] + "-")
             elif down > left and down > cross:
-                a[i,j] = {down , a[i-1,j][1] + "-"}
+                a[i][j] = (down , a[i-1][j][1] + "-")
             else :
-                a[i,j] = {cross , a[i-1,j-1] + dna_2[j]}
-    return a[len(dna_1[1])-1,len(dna_2[1])-1]
+                a[i][j] = (cross , a[i-1][j-1][1] + dna_2[1][j-1])
+    return a[len(dna_1[1])][len(dna_2[1])]
 
 
-def space_efficient_alignment(dna_1,dna_2):
-    # Array B[0... m, 0... 1]
-    # Initialize B[i,0] = i ?? for each i # just as in column 0 of A
-    # for j = 1, ..., n
-        #B[0,1] = j?? # since this corresponds to entry A[0,j]
-        # for i = 1, ..., m
-            #B[i,1] = min(B[i-1,0], delta + B[i-1,1], delta + B[i,0])
-        #move column1 of B to coloumn 0 to make room for next iteration
-            # update B[i,0]=B[i,1] for each i
-    pass
+def space_efficient_alignment(dna_1, dna_2, all_penalty):
+    a = []
+    for i in range(0, 2):
+        a.append([])
+        for j in range(0, len(dna_1[1])+1):
+            a[i].append((0,""))
+    for i in range(1, len(dna_1[1])+1):
+        a[0][i] = (-4 * i, "-" + a[0][i-1][1])
+    for j in range(1,len(dna_2[1])+1):
+        a[j%2][0] = (-4 * j, "-" + a[j%2-1][0][1])
+        for i in range(1,len(dna_1[1])+1):
+            left = -4 + a[j%2-1][i][0]
+            down = -4 + a[j%2][i-1][0]
+            cross = all_penalty[dna_1[1][i-1]][dna_2[1][j-1]] + a[j%2-1][i-1][0]
+            if(left > down and left > cross):
+                a[j%2][i] = (left, a[j%2-1][i][1] + "-")
+            elif down > left and down > cross:
+                a[j%2][i] = (down , a[j%2][i-1][1] + "-")
+            else :
+                a[j%2][i] = (cross , a[j%2-1][i-1][1] + dna_2[1][j-1])
+            letter = j
+    return a[len(dna_2[1]) % 2][len(dna_1[1])]
 
 def backward_space_efficient_alignment():
     pass
@@ -137,8 +155,8 @@ def main_algo(all_dna, all_penalty):
     for i in range(len(all_dna)):
         for j in range (i, len(all_dna)):
             if i != j:
-                res = devide_and_conquer_alignment(all_dna[i], all_dna[j], all_penalty)
-                output(res)
+                res = space_efficient_alignment(all_dna[j], all_dna[i], all_penalty)
+                output(all_dna[i], all_dna[j], res)
 
 '''Algorithm'''
 
@@ -148,6 +166,6 @@ if __name__ == "__main__":
     if len(args) > 2:
         all_dna = parse_dna_file(args[1])
         all_penalty = parse_penalty_file(args[2])
-        #main_algo(all_dna, all_penalty)
+        main_algo(all_dna, all_penalty)
 
 '''END CODE'''
