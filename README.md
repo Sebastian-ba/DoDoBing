@@ -1,4 +1,7 @@
 # Master Repo for Algorithm Design
+[![Build Status](https://travis-ci.org/Sebastian-ba/DoDoBing.svg?branch=fix-build)](https://travis-ci.org/Sebastian-ba/DoDoBing)
+<a href="https://www.codacy.com/app/Sebastian-ba/DoDoBing/dashboard"><img src="https://api.codacy.com/project/badge/Grade/c098136ef81345b78c480ee695314a21"/></a>
+
 
 ### Requirements
 
@@ -19,7 +22,7 @@ $ nosetests -vds test.py
 
 Any directory:
 ```bash
-$ nosetests -vwd closest-points/src testParse.py
+$ nosetests -vds -w closest-points/src testParse.py
 ```
 
 Nose options:
@@ -30,12 +33,9 @@ Nose options:
 
 -v Verbose, list tests failed/passed
 
--s Shows print statements from tests 
+-s Shows print statements from tests
 
 
 [Reference to nosetests](http://pythontesting.net/framework/nose/nose-introduction/)
 
-
-##Reports
-* [Stable Matching](https://www.overleaf.com/10793365gjyfgszctdft#/40541628/)
-* [Closest Point in the Plane](https://www.overleaf.com/11000691nbtvxpttrfsm#/41422336/)
+[Reference to .travis.yml](https://docs.travis-ci.com/user/languages/python/)
