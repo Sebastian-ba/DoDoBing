@@ -3,11 +3,12 @@ sudo: required
 notifications:
   email: false
 python:
-  - 3.6
-  - 2.7
+  - "3.6"
+  - "nightly"
 
 install:
   - pip install nose
 script:
-  - nosetests -d test.py
-  - nosetests -vwd gorilla/src test.py
+  - nosetests -vd -w matching/Python testUtils.py
+  - nosetests -vd -w closest-points/src testParse.py
+  - nosetests -vd -w gorilla/src test.py
