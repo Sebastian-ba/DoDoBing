@@ -5,9 +5,6 @@ notifications:
 python:
   - "3.6"
   - "nightly"
-os:
-  - linux
-  - osx
 
 install:
   - pip install nose
