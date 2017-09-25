@@ -24,17 +24,48 @@ def output(result):
 '''Helper methods end'''
 
 '''Algorithm'''
-def space_efficient_alignment():
-    
+def Alignment(dna_1,dna_2, cost_dict):
+    s = ""
+    a = [len(dna_1[1]),len(dna_2[1])]
+    a[0,0] = {0,""}
+    for i in range(1, len(dna_1[1])):
+        a[i,0] = {-4 * i, "-" + a[i-1,0][1]}
+    for j in range(1, len(dna_2)[1]):
+        a[0,j] = {-4 * j, "-" + a[0,j-1][1]}
+    for j in range(1,len(dna_2[1])):
+        for i in range(1,len(dna_1[1])):
+            left = -4 + a[i,j-1][0]
+            down = -4 + a[i-1,j][0]
+            cross = cost_dict[dna_1[1][i]][dna_2[1][j]] + a[i-1,j-1][0]
+            if(left > down and left > cross):
+                a[i,j] = {left, a[i,j-1][1] + "-"}
+            elif down > left and down > cross:
+                a[i,j] = {down , a[i-1,j][1] + "-"}
+            else :
+                a[i,j] = {cross , a[i-1,j-1] + dna_2[j]}
+    return a[len(dna_1[1])-1,len(dna_2[1])-1]
+
+
+def space_efficient_alignment(dna_1,dna_2):
+    # Array B[0... m, 0... 1]
+    # Initialize B[i,0] = i ?? for each i # just as in column 0 of A
+    # for j = 1, ..., n
+        #B[0,1] = j?? # since this corresponds to entry A[0,j]
+        # for i = 1, ..., m
+            #B[i,1] = min(B[i-1,0], delta + B[i-1,1], delta + B[i,0])
+        #move column1 of B to coloumn 0 to make room for next iteration
+            # update B[i,0]=B[i,1] for each i
+
+
 
 def backward_space_efficient_alignment():
     pass
 
 def devide_and_conquer_alignment(dna_1, dna_2):
-    # let m be the number of ymbols in dna_1
+    # let m be the number of symbols in dna_1
     # let n be the number of symbols in dna_2
-    # if m <= 2 or n <= then 
-        # compute optimal alignment using Allignemnt(X,Y)
+    # if m <= 2 or n <= 2 then 
+        # compute optimal alignment using Allignment(X,Y)
     # call Space-Efficient-Alignment (X,Y[1:n/2])
     # Call Backward_Space_efficient_alignment(X,Y[n/2 +1:n])
     
