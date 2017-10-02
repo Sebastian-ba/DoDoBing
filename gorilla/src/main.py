@@ -80,7 +80,7 @@ def output(dna_1, dna_2, result):
 
 '''Algorithm'''
 
-''' Simple: Running time O(n * m), space O(n * m) '''
+''' Simple: Running time O(n * m), space O(n^2+2mn+m^2) '''
 def alignment(dna_1, dna_2, all_penalty):
     a = []
     # Init matrix.
@@ -108,7 +108,7 @@ def alignment(dna_1, dna_2, all_penalty):
 
     return a[len(dna_1[1])][len(dna_2[1])]
 
-''' Running time O(n * m), space O(n * 2) '''
+''' Running time O(n * m), space O(2n^2 + 2nm) '''
 def space_efficient_alignment(dna_1, dna_2, all_penalty):
     a = []
     # Init n*2 matrix
