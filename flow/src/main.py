@@ -44,9 +44,12 @@ def bottleneck(nodes, edges, path):
     max_throughput = -1
     for i in range(len(path)-1):
         edge_id = nodes[path[i]].related_edges[path[i+1]]
-        throughput = edges[edge_id].capacity - edges[edge_id].flow
-        if throughput < max_throughput or max_throughput == -1:
-            max_throughput = throughput
+        capacity = edges[edge_id].capacity
+        if capacity >= 0:
+            throughput = capacity - edges[edge_id].flow
+            if throughput < max_throughput or max_throughput == -1:
+                max_throughput = throughput
+         
     return max_throughput
 
 '''Helper methods end'''
