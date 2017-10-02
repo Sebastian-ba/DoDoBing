@@ -13,3 +13,4 @@ script:
   - nosetests -vd -w closest-points/src testParse.py
   - nosetests -vd -w gorilla/src test.py
   - nosetests -vd -w flow/src test.py
+  - nosetests -vd -w flow/src test_parser.py
