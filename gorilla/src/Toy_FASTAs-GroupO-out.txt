@@ -1,0 +1,9 @@
+Sphinx--Bandersnatch: 5
+KQRK
+K-RK
+Sphinx--Snark: -8
+KQRK
+KQR-------K
+Bandersnatch--Snark: -18
+KAK
+-------KA-K
