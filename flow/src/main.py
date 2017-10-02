@@ -9,6 +9,26 @@ import sys
 
 '''Helper methods'''
 
+class Edge:
+    def __init__(self, from_node_id, to_node_id, capacity, flow):
+        self.from_node_id = from_node_id
+        self.to_node_id = to_node_id
+        self.capacity = capacity
+        self.flow = flow
+
+
+class Node:
+    def __init__(self, name):
+        self.name = name
+        self.related_edges = {}
+
+    def addEdgeTo(self, edge, edge_id):
+        self.related_edges[edge.to_node_id] = edge_id
+
+    def addEdgeFrom(self, edge, edge_id):
+        self.related_edges[edge.from_node_id] = edge_id
+
+
 def output():
     pass
 
@@ -24,6 +44,17 @@ def bottleneck(nodes, edges, path):
     for i in range(len(path)-1):
         edge_id = nodes[path[i]]["edge_ids"][path[i+1]]
         throughput = edges[edge_id]["capacity"] - edges[edge_id]["flow"]
+        if throughput < max_throughput or max_throughput == -1:
+            max_throughput = throughput
+    return max_throughput
+
+
+def bottleneck(nodes, edges, path):
+    # this is clearly positive infinity
+    max_throughput = -1
+    for i in range(len(path)-1):
+        edge_id = nodes[path[i]].related_edges[path[i+1]]
+        throughput = edges[edge_id].capacity - edges[edge_id].flow
         if throughput < max_throughput or max_throughput == -1:
             max_throughput = throughput
     return max_throughput
