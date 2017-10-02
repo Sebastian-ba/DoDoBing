@@ -7,7 +7,7 @@ def test_parser1():
 
 def test_parser2():
 	assert 55 == len(nodes)
-
+	
 def test_parser3():
 	assert "ORIGINS" == nodes[0].name
 	assert "13N" == nodes[3].name

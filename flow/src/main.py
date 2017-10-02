@@ -28,7 +28,7 @@ def parse_rail_file(filename):
                 from_node_id = int(string_integers[0])
                 to_node_id = int(string_integers[1])
                 capacity = int(string_integers[2])
-                edges.insert(edge_counter, Edge(from_node_id, to_node_id, capacity, flow))
+                edges.append( Edge(from_node_id, to_node_id, capacity, flow))
                 nodes[from_node_id].addEdgeTo(edges[edge_counter], edge_counter)
                 nodes[to_node_id].addEdgeFrom(edges[edge_counter], edge_counter)
 
@@ -36,7 +36,7 @@ def parse_rail_file(filename):
                     parsing_edges = False
                 continue
             if parsing_nodes:
-                nodes.insert(node_counter, Node(line))
+                nodes.append(Node(line[:-1]))
                 node_counter += 1
                 if node_counter == total_nodes:
                     parsing_nodes = False
