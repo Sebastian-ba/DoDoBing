@@ -5,6 +5,52 @@ import sys
 
 '''Parse'''
 
+def parse_rail_file(filename):
+    nodes = []
+    edges = []
+
+    node_counter = 0
+    edge_counter = 0
+    
+    flow = 0
+    
+    parsing_nodes = False
+    parsing_edges = False
+
+    total_nodes = 0
+    total_edges = 0
+
+    with open(filename) as f:
+        lines = f.readlines()
+        for line in lines:
+            if parsing_edges:
+                string_integers = line.split(' ')
+                from_node_id = int(string_integers[0])
+                to_node_id = int(string_integers[1])
+                capacity = int(string_integers[2])
+                edges.insert(edge_counter, Edge(from_node_id, to_node_id, capacity, flow))
+                nodes[from_node_id].addEdgeTo(edges[edge_counter], edge_counter)
+                nodes[to_node_id].addEdgeFrom(edges[edge_counter], edge_counter)
+
+                if edge_counter == total_edges:
+                    parsing_edges = False
+                continue
+            if parsing_nodes:
+                nodes.insert(node_counter, Node(line))
+                node_counter += 1
+                if node_counter == total_nodes:
+                    parsing_nodes = False
+                continue
+            if total_nodes == 0:
+                total_nodes = int(line)
+                parsing_nodes = True
+                continue
+            if total_edges == 0:
+                total_edges = int(line)
+                parsing_edges = True
+
+    return(nodes,edges)
+
 '''Parse end'''
 
 '''Helper methods'''
@@ -77,7 +123,9 @@ def max_flow_alg(nodes, edges, start, target):
 '''RUN CODE'''
 if __name__ == "__main__":
     args = sys.argv
-    #if len(args) > 2:
+    if len(args) == 2:
+        (nodes,edges) = parse_rail_file(args[1])
+        print(nodes[0].name)
     #    all_dna = parse_dna_file(args[1])
     #    all_penalty = parse_penalty_file(args[2])
     #    main_algo(all_dna, all_penalty)
