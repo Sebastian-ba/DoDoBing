@@ -38,16 +38,6 @@ def get_valid_path(nodes, edges, start, target):
 ''' 
     returns the current maximum throughput on the given path.
 '''
-def bottleneck(nodes, edges, path):
-    # this is clearly positive infinity
-    max_throughput = -1
-    for i in range(len(path)-1):
-        edge_id = nodes[path[i]]["edge_ids"][path[i+1]]
-        throughput = edges[edge_id]["capacity"] - edges[edge_id]["flow"]
-        if throughput < max_throughput or max_throughput == -1:
-            max_throughput = throughput
-    return max_throughput
-
 
 def bottleneck(nodes, edges, path):
     # this is clearly positive infinity
@@ -62,16 +52,16 @@ def bottleneck(nodes, edges, path):
 '''Helper methods end'''
 
 '''Algorithm'''
-def augment(nodes, edges, start, target, path):
-    max_throughput = bottleneck(P,f)
+def augment(nodes, edges, path):
+    max_throughput = bottleneck(nodes, edges, path)
     for i in range(len(path) - 1):
-        edge_id = nodes[path[i]]["edge_ids"][path[i+1]]
-        if edges[edge_id]["from"] == path[i]: 
+        edge_id = nodes[path[i]].related_edges[path[i+1]]
+        if edges[edge_id].from_node_id == path[i]: 
             #if edge is a forward edge then increase flow 
-            edges[edge_id]["flow"] += max_throughput
+            edges[edge_id].flow += max_throughput
         else:
             #if edge is a backward edge, decrease the flow
-            edges[edge_id]["flow"] -= max_throughput
+            edges[edge_id].flow -= max_throughput
     return edges
     
 def max_flow_alg(nodes, edges, start, target):
@@ -79,7 +69,7 @@ def max_flow_alg(nodes, edges, start, target):
     if not(path):
         return None
     while not(path):
-        edges = augment(nodes, edges, start, target, path)
+        edges = augment(nodes, edges, path)
         path = get_valid_path(nodes, edges, start, target)
     return edges
 '''Algorithm end'''
