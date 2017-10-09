@@ -94,32 +94,32 @@ def get_valid_path(nodes, edges):
     path_steps[0] = None
     visited_nodes[0] = True
 
-    print("Code is running")
+    # print("Code is running")
 
     while queue:
         # dequeue first vertex in queue
         cur_node = queue.pop(0)
-        print("Working on --> ", cur_node.id)
+        # print("Working on --> ", cur_node.id)
 
         for nid, eid in cur_node.related_edges.items():
-            print("Loop edges --> ", nid, " => ", eid)
+            # print("Loop edges --> ", nid, " => ", eid)
             # check if we're going in the correct direction
             if edges[eid].to_node_id == cur_node.id:
-                print("wrong direction")
+                # print("wrong direction")
                 continue
             # check if we are at max capacity
             if (edges[eid].capacity - edges[eid].flow) == 0:
-                print("Edge is at max cap")
+                # print("Edge is at max cap")
                 continue
             # last node, the end
             if nid == (len(nodes) - 1):
-                print("Found last node")
+                # print("Found last node")
                 path_steps[nid] = cur_node.id
-                print(path_steps)
+                # print(path_steps)
                 return get_full_path(path_steps, nid)
             # check if we visited node before
             if visited_nodes[nid] == False:
-                print("We've seen this node before, skip")
+                # print("We've seen this node before, skip")
                 queue.append(nodes[nid])
                 path_steps[nid] = cur_node.id
                 visited_nodes[nid] = True
@@ -181,10 +181,9 @@ def max_flow_alg(nodes, edges):
 if __name__ == "__main__":
     args = sys.argv
     if len(args) == 2:
-        (nodes,edges) = parse_rail_file(args[1])
-        print(nodes[0].name)
-    #    all_dna = parse_dna_file(args[1])
-    #    all_penalty = parse_penalty_file(args[2])
-    #    main_algo(all_dna, all_penalty)
+        nodes, edges = parse_rail_file(args[1])
+        for edge in max_flow_alg(nodes, edges):
+            if edge.flow > 0:
+                print(edge.from_node_id, edge.to_node_id, edge.flow)
 
 '''END CODE'''

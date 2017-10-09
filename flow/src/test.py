@@ -115,3 +115,39 @@ def test_augmentTest5():
 	res_edges = augment(N, E, [0,2,1])
 	res = res_edges[3].flow
 	assert 10 == res
+
+def test_max_flow():
+	e0 = Edge(0,1,10,0)
+	e1 = Edge(0,2,20,0)
+	e2 = Edge(2,3,30,0)
+	e3 = Edge(2,1,10,0)
+	e4 = Edge(1,3,20,0)
+
+	s = Node("s", 0)
+	s.addEdgeTo(e0, 0)
+	s.addEdgeTo(e1, 1)
+
+	n2 = Node("n2", 1)
+	n2.addEdgeFrom(e1, 1)
+	n2.addEdgeFrom(e3, 3)
+	n2.addEdgeTo(e4, 4)
+
+	n3 = Node("n3", 2)
+	n3.addEdgeFrom(e0, 0)
+	n3.addEdgeTo(e3, 3)
+	n3.addEdgeTo(e2, 2)
+
+	t = Node("t", 3)
+	t.addEdgeFrom(e4, 4)
+	t.addEdgeFrom(e2, 2)
+
+	nodes = [s,n2,n3,t]
+	edges = [e0,e1,e2,e3,e4]
+
+	new_edges = max_flow_alg(nodes, edges)
+
+	assert new_edges[0].flow == 10
+	assert new_edges[1].flow == 20
+	assert new_edges[2].flow == 20
+	assert new_edges[3].flow == 0
+	assert new_edges[4].flow == 10

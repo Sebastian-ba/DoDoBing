@@ -134,14 +134,14 @@ def test_complex():
     path = get_valid_path(nodes_2, edges_2)
     assert path == [0, 1, 3] # valid
 
-def test_complex2():
+def test_complex2(): # block flow from 0->1
     path = get_valid_path(nodes_3, edges_3)
     assert path == [0, 2, 3] # valid
 
-def test_complex3():
+def test_complex3(): # block flow from 2->3 & 0->1
     path = get_valid_path(nodes_4, edges_4)
     assert path == [0, 2, 1, 3] # valid
 
-def test_complex4():
+def test_complex4(): # block from from 2->3 & 1->3
     path = get_valid_path(nodes_5, edges_5)
     assert path == None # valid
