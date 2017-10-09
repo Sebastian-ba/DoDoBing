@@ -64,7 +64,6 @@ class Edge:
         self.capacity = capacity
         self.flow = flow
 
-
 class Node:
     def __init__(self, name, node_id):
         self.name = name
@@ -83,47 +82,57 @@ def output():
 
 #BFS
 def get_valid_path(nodes, edges):
-	path_steps = {}
+    path_steps = {}
 
-	# visited nodes tracker
-	visited_nodes = [False]*(len(nodes))
-	# queue of nodes to check from
-	queue = []
+    # visited nodes tracker
+    visited_nodes = [False]*(len(nodes))
+    # queue of nodes to check from
+    queue = []
 
-	# queue start Node
-	queue.append(nodes[0])
-	path_steps[0] = None
-	visited_nodes[0] = True
+    # queue start Node
+    queue.append(nodes[0])
+    path_steps[0] = None
+    visited_nodes[0] = True
 
-	while queue:
-		# dequeue first vertex in queue
-		cur_node = queue.pop(0)
+    print("Code is running")
 
-		for nid, eid in cur_node.related_edges.items():
-			# check if we're going in the correct direction
-			if edges[eid].to_node_id == nid:
-				continue
-			# check if we are at max capacity
-			if (edges[eid].capacity - edges[eid].flow) == 0:
-				continue
-			# last node, the end
-			if nid == (nodes.length -1):
-				path_steps[nid] = cur_node.id
-				return get_full_path(path_steps, nid)
-			# check if we visited node before
-			if visited_nodes[nid] == False:
-				queue.append(nodes[nid])
-				path_steps[nid] = cur_node.id
-				visited_nodes[nid] = True
-	return None
+    while queue:
+        # dequeue first vertex in queue
+        cur_node = queue.pop(0)
+        print("Working on --> ", cur_node.id)
+
+        for nid, eid in cur_node.related_edges.items():
+            print("Loop edges --> ", nid, " => ", eid)
+            # check if we're going in the correct direction
+            if edges[eid].to_node_id == cur_node.id:
+                print("wrong direction")
+                continue
+            # check if we are at max capacity
+            if (edges[eid].capacity - edges[eid].flow) == 0:
+                print("Edge is at max cap")
+                continue
+            # last node, the end
+            if nid == (len(nodes) - 1):
+                print("Found last node")
+                path_steps[nid] = cur_node.id
+                print(path_steps)
+                return get_full_path(path_steps, nid)
+            # check if we visited node before
+            if visited_nodes[nid] == False:
+                print("We've seen this node before, skip")
+                queue.append(nodes[nid])
+                path_steps[nid] = cur_node.id
+                visited_nodes[nid] = True
+    return None
 
 def get_full_path(path_dict, nid):
-	cur_path = []
-	while path_dict[nid] != None:
-		cur_path.append(nid)
-		nid = path_dict[nid]
-	cur_path.append(0)
-	return cur_path.reverse()
+    cur_path = []
+    while path_dict[nid] != None:
+        cur_path.append(nid)
+        nid = path_dict[nid]
+    cur_path.append(0)
+    cur_path.reverse()
+    return cur_path
 
 
 '''
