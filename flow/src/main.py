@@ -83,39 +83,38 @@ def output():
 
 #BFS
 def get_valid_path(nodes, edges):
-	path_steps = {}
+    path_steps = {}
 
-	# visited nodes tracker
-	visited_nodes = [False]*(len(nodes))
-	# queue of nodes to check from
-	queue = []
+    # visited nodes tracker
+    visited_nodes = set()
+    # queue of nodes to check from
+    queue = []
 
-	# queue start Node
-	queue.append(nodes[0])
-	path_steps[0] = None
-	visited_nodes[0] = True
+    # queue start Node
+    queue.append(nodes[0])
+    path_steps[0] = None
+    visited_nodes.add(0)
+    while queue:
+        # dequeue first vertex in queue
+        cur_node = queue.pop(0)
 
-	while queue:
-		# dequeue first vertex in queue
-		cur_node = queue.pop(0)
-
-		for nid, eid in cur_node.related_edges.items():
-			# check if we're going in the correct direction
-			if edges[eid].to_node_id == nid:
-				continue
-			# check if we are at max capacity
-			if (edges[eid].capacity - edges[eid].flow) == 0:
-				continue
-			# last node, the end
-			if nid == (nodes.length -1):
-				path_steps[nid] = cur_node.id
-				return get_full_path(path_steps, nid)
-			# check if we visited node before
-			if visited_nodes[nid] == False:
-				queue.append(nodes[nid])
-				path_steps[nid] = cur_node.id
-				visited_nodes[nid] = True
-	return None
+        for nid, eid in cur_node.related_edges.items():
+            # check if we're going in the correct direction
+            if edges[eid].to_node_id == cur_node.id:
+                continue
+            # check if we are at max capacity
+            if (edges[eid].capacity - edges[eid].flow) == 0:
+                continue
+            # last node, the end
+            if nid == (len(nodes) -1):
+                path_steps[nid] = cur_node.id
+                return get_full_path(path_steps, nid)
+            # check if we visited node before
+            if not nid in visited_nodes:
+                queue.append(nodes[nid])
+                path_steps[nid] = cur_node.id
+                visited_nodes.add(nid)
+    return None
 
 def get_full_path(path_dict, nid):
 	cur_path = []
@@ -123,7 +122,7 @@ def get_full_path(path_dict, nid):
 		cur_path.append(nid)
 		nid = path_dict[nid]
 	cur_path.append(0)
-	return cur_path.reverse()
+	return list(reversed(cur_path))
 
 
 '''
@@ -172,10 +171,9 @@ def max_flow_alg(nodes, edges):
 if __name__ == "__main__":
     args = sys.argv
     if len(args) == 2:
-        (nodes,edges) = parse_rail_file(args[1])
-        print(nodes[0].name)
-    #    all_dna = parse_dna_file(args[1])
-    #    all_penalty = parse_penalty_file(args[2])
-    #    main_algo(all_dna, all_penalty)
+        nodes, edges = parse_rail_file(args[1])
+        for edge in max_flow_alg(nodes, edges):
+            if edge.flow > 0:
+                print(edge.from_node_id, edge.to_node_id, edge.flow)
 
 '''END CODE'''
