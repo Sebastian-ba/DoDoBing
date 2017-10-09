@@ -112,6 +112,7 @@ def get_valid_path(nodes, edges):
                 visited_nodes[nid] = True
     return None
 
+''' Traceback the valid path from a certain nid '''
 def get_full_path(path_dict, nid):
     cur_path = []
     while path_dict[nid] != None:
