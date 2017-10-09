@@ -93,7 +93,6 @@ def get_valid_path(nodes, edges):
     path_steps[0] = None
     visited_nodes[0] = True
 
-
     while queue:
         # dequeue first vertex in queue
 
@@ -112,6 +111,15 @@ def get_valid_path(nodes, edges):
                 path_steps[nid] = cur_node.id
                 visited_nodes[nid] = True
     return None
+
+def get_full_path(path_dict, nid):
+    cur_path = []
+    while path_dict[nid] != None:
+        cur_path.append(nid)
+        nid = path_dict[nid]
+    cur_path.append(0)
+    cur_path.reverse()
+    return cur_path
 
 ''' Traceback the valid path from a certain nid '''
 def get_full_path(path_dict, nid):

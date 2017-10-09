@@ -15,4 +15,7 @@ script:
   - nosetests -vd -w flow/src test.py
   - nosetests -vd -w flow/src test_parser.py
   - nosetests -vd -w flow/src test_path.py
+<<<<<<< f2d98bd27be05fc1cc1f9c36b28ebb091349bc55
   - nosetests -vd -w flow/src test_cut.py
+=======
+>>>>>>> Fixed get_valid_path and added test, tabs incoming?!
