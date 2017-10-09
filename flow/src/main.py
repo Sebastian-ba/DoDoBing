@@ -80,7 +80,7 @@ class Node:
 def output():
     pass
 
-#BFS
+''' BFS '''
 def get_valid_path(nodes, edges):
     path_steps = {}
 
@@ -94,37 +94,30 @@ def get_valid_path(nodes, edges):
     path_steps[0] = None
     visited_nodes[0] = True
 
-    # print("Code is running")
 
     while queue:
         # dequeue first vertex in queue
         cur_node = queue.pop(0)
-        # print("Working on --> ", cur_node.id)
 
         for nid, eid in cur_node.related_edges.items():
-            # print("Loop edges --> ", nid, " => ", eid)
             # check if we're going in the correct direction
             if edges[eid].to_node_id == cur_node.id:
-                # print("wrong direction")
                 continue
             # check if we are at max capacity
             if (edges[eid].capacity - edges[eid].flow) == 0:
-                # print("Edge is at max cap")
                 continue
             # last node, the end
             if nid == (len(nodes) - 1):
-                # print("Found last node")
                 path_steps[nid] = cur_node.id
-                # print(path_steps)
                 return get_full_path(path_steps, nid)
             # check if we visited node before
             if visited_nodes[nid] == False:
-                # print("We've seen this node before, skip")
                 queue.append(nodes[nid])
                 path_steps[nid] = cur_node.id
                 visited_nodes[nid] = True
     return None
 
+''' Traceback the valid path from a certain nid '''
 def get_full_path(path_dict, nid):
     cur_path = []
     while path_dict[nid] != None:
@@ -183,7 +176,9 @@ if __name__ == "__main__":
     if len(args) == 2:
         nodes, edges = parse_rail_file(args[1])
         for edge in max_flow_alg(nodes, edges):
-            if edge.flow > 0:
+            # "The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts"
+            # To find the minimum cut flow must be > 0 and flow = capacity
+            if edge.flow > 0 and edge.flow == edge.capacity:
                 print(edge.from_node_id, edge.to_node_id, edge.flow)
 
 '''END CODE'''
