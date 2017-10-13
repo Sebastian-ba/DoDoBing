@@ -182,7 +182,6 @@ if __name__ == "__main__":
     if len(args) == 2:
         nodes, edges = parse_rail_file(args[1])
         edges = max_flow_alg(nodes, edges)
-
         output(nodes, edges)
 
 '''END CODE'''
