@@ -168,8 +168,6 @@ def augment(nodes, edges, path):
 
 def max_flow_alg(nodes, edges):
     path = get_valid_path(nodes, edges)
-    if not(path):
-        return None
     while path:
         edges = augment(nodes, edges, path)
         path = get_valid_path(nodes, edges)
