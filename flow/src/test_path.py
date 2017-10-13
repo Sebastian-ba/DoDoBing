@@ -145,3 +145,22 @@ def test_complex3(): # block flow from 2->3 & 0->1
 def test_complex4(): # block from from 2->3 & 1->3
     path = get_valid_path(nodes_5, edges_5)
     assert path == None # valid
+
+
+
+edge1 = Edge(0,1,-1,0)
+edge2 = Edge(1,2,10,0)
+node1 = Node("s", 0)
+node1.addEdgeTo(edge1, 0)
+node2 = Node("n1", 1)
+node2.addEdgeFrom(edge1, 0)
+node2.addEdgeTo(edge2, 1)
+node3 = Node("t", 2)
+node3.addEdgeFrom(edge2, 1)
+nodes_6 =  [node1, node2, node3]
+edges_6 =  [edge1, edge2]
+
+def test_simple_infinite_path():
+    path = get_valid_path(nodes_6, edges_6)
+    assert path == [0,1,2]
+    
