@@ -164,3 +164,22 @@ def test_simple_infinite_path():
 
 
 
+def test_opt_basic():
+    path = optimized_valid_path(nodes, edges)
+    assert path == [0, 1]
+
+def test_opt_complex():
+    path = optimized_valid_path(nodes_2, edges_2)
+    assert path == [0, 1, 3] # valid
+
+def test_opt_complex2(): # block flow from 0->1
+    path = optimized_valid_path(nodes_3, edges_3)
+    assert path == [0, 2, 3] # valid
+
+def test_opt_complex3(): # block flow from 2->3 & 0->1
+    path = optimized_valid_path(nodes_4, edges_4)
+    assert path == [0, 2, 1, 3] # valid
+
+def test_opt_complex4(): # block from from 2->3 & 1->3
+    path = optimized_valid_path(nodes_5, edges_5)
+    assert path == None # valid
