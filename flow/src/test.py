@@ -227,10 +227,28 @@ def test_max_flow_infinite2():
 	assert new_edges[3].flow == 0
 	assert new_edges[4].flow == 20
 
-def test_on_the_file():
+def test_on_the_file1():
+	nodes, edges = parse_rail_file("../data/rail.txt")
+	edges = max_flow_alg(nodes, edges)
+	flow_sum_org = 0
+	flow_sum_des = 0
+
+	for n_id, edge_id in nodes[0].related_edges.items():
+		flow_sum_org += edges[edge_id].flow
+	
+	for n_id, edge_id in nodes[54].related_edges.items():
+		flow_sum_des += edges[edge_id].flow
+
+	print("flow_sum for file: " + str(flow_sum_des))
+	
+	assert flow_sum_org == flow_sum_des
+
+
+def test_on_the_file2():
 	nodes, edges = parse_rail_file("../data/rail.txt")
 	edges = max_flow_alg(nodes, edges)
 	min_cut_edges = min_cut(nodes, edges)
+	print(len(min_cut_edges))
 	output(min_cut_edges)
 	# this is according to the out file from the data folder.
 	assert len(min_cut_edges) == 9

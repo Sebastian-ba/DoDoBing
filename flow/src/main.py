@@ -145,11 +145,69 @@ def bottleneck(nodes, edges, path):
     return max_throughput
 
 def min_cut(nodes, edges):
-    return None
+    '''
+    min_cut_edges = []
+    for node in nodes:
+        for nid, eid in node.related_edges.items():
+            #if not(edges[eid].to_node_id in a):
+            if edges[eid].flow == edges[eid].capacity:
+                min_cut_edges.append(edges[eid])
+
+    return min_cut_edges
+    '''
+    #'''
+    a = set([0])
+    queue = []
+    queue.append(nodes[0])
+    while queue:
+        cur_node = queue.pop(0)
+        for nid, eid in cur_node.related_edges.items():
+            # check if we are at max capacity
+            if edges[eid].capacity == edges[eid].flow:
+                continue
+            if nid in a:
+                continue
+            if edges[eid].to_node_id == cur_node.id:
+                continue
+            queue.append(nodes[nid])
+            a.add(nid)
+    #'''
+    '''
+    a = set([len(nodes)-1])
+    queue = []
+    queue.append(nodes[len(nodes)-1])
+    while queue:
+        cur_node = queue.pop(0)
+        for nid, eid in cur_node.related_edges.items():
+            # check if we are at max capacity
+            if edges[eid].capacity == edges[eid].flow:
+                continue
+            if nid in a:
+                continue
+            if edges[eid].from_node_id == cur_node.id:
+                continue
+            queue.append(nodes[nid])
+            a.add(nid)
+    '''
+    print(a)
+
+    min_cut_edges = []
+    for nid in a:
+        cur_node = nodes[nid]
+        for nid, eid in cur_node.related_edges.items():
+            if not(edges[eid].to_node_id in a):
+                #if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity and
+                min_cut_edges.append(edges[eid])
+
+    return min_cut_edges
+
 
 def output(edges):
-    for edge in edges:
-        print("" + str(edge.from_node_id) + " " + str(edge.to_node_id) + " " + str(edge.flow))
+    if edges:
+        for edge in edges:
+            print("" + str(edge.from_node_id) + " " + str(edge.to_node_id) + " " + str(edge.flow) + " " + str(edge.capacity))
+    else :
+        print("There is no ideal cut")
 
 '''Helper methods end'''
 
