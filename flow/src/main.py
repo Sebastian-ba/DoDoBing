@@ -145,7 +145,7 @@ def bottleneck(nodes, edges, path):
     return max_throughput
 
 def min_cut(nodes, edges):
-    '''
+    ''' the old
     min_cut_edges = []
     for node in nodes:
         for nid, eid in node.related_edges.items():
@@ -154,9 +154,8 @@ def min_cut(nodes, edges):
                 min_cut_edges.append(edges[eid])
 
     return min_cut_edges
-    '''
     #'''
-    a = set([0])
+    ''' the new
     queue = []
     queue.append(nodes[0])
     while queue:
@@ -164,15 +163,19 @@ def min_cut(nodes, edges):
         for nid, eid in cur_node.related_edges.items():
             # check if we are at max capacity
             if edges[eid].capacity == edges[eid].flow:
+  
                 continue
             if nid in a:
                 continue
             if edges[eid].to_node_id == cur_node.id:
+                #if not(edges[eid].from_node_id in a):
+                #    queue.append(nodes[nid])
+                #    a.add(nid)
                 continue
             queue.append(nodes[nid])
             a.add(nid)
     #'''
-    '''
+    ''' # this is the one for reverse .
     a = set([len(nodes)-1])
     queue = []
     queue.append(nodes[len(nodes)-1])
@@ -195,8 +198,10 @@ def min_cut(nodes, edges):
     for nid in a:
         cur_node = nodes[nid]
         for nid, eid in cur_node.related_edges.items():
+            ## change to from for the reverse
+            #if not(edges[eid].from_node_id in a):
             if not(edges[eid].to_node_id in a):
-                #if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity and
+            #if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity:
                 min_cut_edges.append(edges[eid])
 
     return min_cut_edges
