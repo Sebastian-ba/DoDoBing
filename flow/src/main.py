@@ -144,12 +144,12 @@ def bottleneck(nodes, edges, path):
 
     return max_throughput
 
-def output(nodes, edges):
+def min_cut(nodes, edges):
+    return None
+
+def output(edges):
     for edge in edges:
-        # "The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts"
-        # To find the minimum cut flow must be > 0 and flow = capacity
-        if edge.flow > 0 and edge.flow == edge.capacity:
-            print(edge.from_node_id, edge.to_node_id, edge.flow)
+        print("" + str(edge.from_node_id) + " " + str(edge.to_node_id) + " " + str(edge.flow))
 
 '''Helper methods end'''
 
@@ -180,6 +180,7 @@ if __name__ == "__main__":
     if len(args) == 2:
         nodes, edges = parse_rail_file(args[1])
         edges = max_flow_alg(nodes, edges)
-        output(nodes, edges)
+        min_cut_edges = min_cut(nodes, edges)
+        output(min_cut_edges)
 
 '''END CODE'''

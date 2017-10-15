@@ -227,12 +227,11 @@ def test_max_flow_infinite2():
 	assert new_edges[3].flow == 0
 	assert new_edges[4].flow == 20
 
-
-
 def test_on_the_file():
 	nodes, edges = parse_rail_file("../data/rail.txt")
 	edges = max_flow_alg(nodes, edges)
-	output(nodes, edges)
+	min_cut_edges = min_cut(nodes, edges)
+	output(min_cut_edges)
 	# this is according to the out file from the data folder.
-	assert len(edges) == 9
+	assert len(min_cut_edges) == 9
 	
