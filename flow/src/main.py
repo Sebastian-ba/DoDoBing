@@ -61,6 +61,9 @@ class Edge:
         self.node_id_2 = node_id_2
         self.capacity = capacity
         self.flow = flow
+    
+    def __str__(self):
+        return str(self.node_id_1) + " " + str(self.node_id_2) + " " + str(self.capacity) + " " + str(self.flow)
 
 class Node:
     def __init__(self, name, node_id):
@@ -70,6 +73,9 @@ class Node:
 
     def addEdgeTo(self, node_id, edge_id):
         self.related_edges[node_id] = edge_id
+    
+    def __str__(self):
+        return str(self.name) + " " + str(self.id) + " " + str(self.related_edges)
 
 
 ''' BFS '''
@@ -89,11 +95,12 @@ def get_valid_path(nodes, edges):
 
     while queue:
         # dequeue first vertex in queue
-        cur_node = queue.pop(0)
 
+        cur_node = queue.pop(0)
         for nid, eid in cur_node.related_edges.items():
+
             # check if we're going in the correct direction
-            #if edges[eid].to_node_id == cur_node.id:
+            #if edges[eid].node_id_1 == cur_node.id:
             #    continue
             # check if we are at max capacity
             if (edges[eid].capacity - edges[eid].flow) == 0:

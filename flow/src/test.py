@@ -71,7 +71,7 @@ def test_bottleneckTest_infinity():
 	e_infinity = Edge(3,1,-1,5)
 	E_infinity_set = [e1,e2,e3,e_infinity,e5]
 	res = bottleneck(N,E_infinity_set,[0,2,1])
-	assert 20 == res
+	assert 15 == res
 
 def test_bottleneckTest5():
 	res = bottleneck(N,E,[0,2,1])
@@ -92,22 +92,42 @@ def test_augmentTest5():
 	res = res_edges[3].flow
 	assert 10 == res
 
-e1 = Edge(0,3,10,0)
-e2 = Edge(0,2,20,0)
-e3 = Edge(2,3,30,0)
-e4 = Edge(2,1,10,0)
-e5 = Edge(3,1,20,0)
+e1_ = Edge(0,2,10,0)
+e2_ = Edge(0,1,20,0)
+e3_ = Edge(1,2,30,0)
+e4_ = Edge(1,3,10,0)
+e5_ = Edge(2,3,20,0)
 
-nodes_1 = [s,t,n2,n3]
-edges_1 = [e1,e2,e3,e4,e5]
+s = Node("s", 0)
+n2 = Node("n2", 1)
+n3 = Node("n3", 2)
+t = Node("t", 3)
+
+s.addEdgeTo(2,0)
+s.addEdgeTo(1,1)
+
+t.addEdgeTo(1,3)
+t.addEdgeTo(2,4)
+
+n2.addEdgeTo(0,1)
+n2.addEdgeTo(2,2)
+n2.addEdgeTo(3,3)
+
+n3.addEdgeTo(0,0)
+n3.addEdgeTo(1,2)
+n3.addEdgeTo(3,4)
+
+nodes_1 = [s,n2,n3,t]
+edges_1 = [e1_,e2_,e3_,e4_,e5_]
 
 def test_max_flow():
 	new_edges = max_flow_alg(nodes_1, edges_1)
+
 	assert new_edges[0].flow == 10
 	assert new_edges[1].flow == 20
-	assert new_edges[2].flow == 20
-	assert new_edges[3].flow == 0
-	assert new_edges[4].flow == 10
+	assert new_edges[2].flow == 10
+	assert new_edges[3].flow == 10
+	assert new_edges[4].flow == 20
 
 '''
 def test_max_flow_infinite():
