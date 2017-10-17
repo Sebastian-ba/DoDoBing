@@ -25,15 +25,13 @@ def parse_rail_file(filename):
         for line in lines:
             if parsing_edges:
                 string_integers = line.split(' ')
-                from_node_id = int(string_integers[0])
-                to_node_id = int(string_integers[1])
+                node_id_1 = int(string_integers[0])
+                node_id_2 = int(string_integers[1])
                 capacity = int(string_integers[2])
-                edges.append( Edge(from_node_id, to_node_id, capacity, flow))
-                nodes[from_node_id].addEdgeTo(edges[edge_counter], edge_counter)
-                nodes[to_node_id].addEdgeFrom(edges[edge_counter], edge_counter)
-
+                edges.append( Edge(node_id_1, node_id_2, capacity, flow))
+                nodes[node_id_1].addEdgeTo(node_id_2, edge_counter)
+                nodes[node_id_2].addEdgeTo(node_id_1, edge_counter)
                 edge_counter += 1
-
                 if edge_counter == total_edges:
                     parsing_edges = False
                 continue
@@ -58,9 +56,9 @@ def parse_rail_file(filename):
 '''Helper methods'''
 
 class Edge:
-    def __init__(self, from_node_id, to_node_id, capacity, flow):
-        self.from_node_id = from_node_id
-        self.to_node_id = to_node_id
+    def __init__(self, node_id_1, node_id_2, capacity, flow):
+        self.node_id_1 = node_id_1
+        self.node_id_2 = node_id_2
         self.capacity = capacity
         self.flow = flow
 
@@ -70,13 +68,8 @@ class Node:
         self.id = node_id
         self.related_edges = {}
 
-    def addEdgeTo(self, edge, edge_id):
-        self.related_edges[edge.to_node_id] = edge_id
-
-    def addEdgeFrom(self, edge, edge_id):
-        self.related_edges[edge.from_node_id] = edge_id
-
-
+    def addEdgeTo(self, node_id, edge_id):
+        self.related_edges[node_id] = edge_id
 
 
 ''' BFS '''
