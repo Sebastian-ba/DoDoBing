@@ -52,11 +52,8 @@ E = [e1,e2,e3,e4,e5]
 def test_augmentTest1():
 	res_edges = augment(nodes, edges, [0,1])
 	assert 5 == res_edges[0].capacity
+	assert 5 == res_edges[0].flow
 
-def test_augmentTest2():
-	res_edges = augment(nodes, edges, [0,1])
-	res = res_edges[0].flow
-	assert 5 == res
 
 
 def test_bottleneckTest2():
@@ -86,42 +83,73 @@ def test_augmentTest4():
 	res_edges = augment(N, E, [0,2,1])
 	res = res_edges[1].flow
 	assert 9 == res
-
-def test_augmentTest5():
-	res_edges = augment(N, E, [0,2,1])
 	res = res_edges[3].flow
 	assert 10 == res
 
-e1_ = Edge(0,2,10,0)
-e2_ = Edge(0,1,20,0)
-e3_ = Edge(1,2,30,0)
-e4_ = Edge(1,3,10,0)
-e5_ = Edge(2,3,20,0)
 
+
+e_1 = Edge(0,2,10,0)
+e_2 = Edge(0,1,20,0)
+e_3 = Edge(1,2,30,0)
+e_4 = Edge(1,3,10,0)
+e_5 = Edge(2,3,20,0)
 s = Node("s", 0)
 n2 = Node("n2", 1)
 n3 = Node("n3", 2)
 t = Node("t", 3)
-
 s.addEdgeTo(2,0)
 s.addEdgeTo(1,1)
-
 t.addEdgeTo(1,3)
 t.addEdgeTo(2,4)
-
 n2.addEdgeTo(0,1)
 n2.addEdgeTo(2,2)
 n2.addEdgeTo(3,3)
-
 n3.addEdgeTo(0,0)
 n3.addEdgeTo(1,2)
 n3.addEdgeTo(3,4)
-
 nodes_1 = [s,n2,n3,t]
-edges_1 = [e1_,e2_,e3_,e4_,e5_]
+edges_1 = [e_1,e_2,e_3,e_4,e_5]
 
 def test_max_flow():
 	new_edges = max_flow_alg(nodes_1, edges_1)
+	assert new_edges[0].flow == 10
+	assert new_edges[1].flow == 20
+	assert new_edges[2].flow == 10
+	assert new_edges[3].flow == 10
+	assert new_edges[4].flow == 20
+
+def test_max_flow_infinite():
+	e_1 = Edge(0,2,10,0)
+	e_2 = Edge(0,1,20,0)
+	e_3 = Edge(1,2,30,0)
+	e_4 = Edge(1,3,10,0)
+	e_5 = Edge(2,3,20,0)
+
+	e1_infinity = Edge(0,2,-1,0)
+
+	edges_2 = [e1_infinity,e_2,e_3,e_4,e_5]
+
+	new_edges = max_flow_alg(nodes_1, edges_2)
+
+	assert new_edges[0].flow == 20
+	assert new_edges[1].flow == 10
+	assert new_edges[2].flow == 0
+	assert new_edges[3].flow == 10
+	assert new_edges[4].flow == 20
+
+
+def test_max_flow_infinite2():
+
+	e_1 = Edge(0,2,10,0)
+	e_2 = Edge(0,1,20,0)
+	e_3 = Edge(1,2,30,0)
+	e_4 = Edge(1,3,10,0)
+	e_5 = Edge(2,3,20,0)
+	e2_infinity = Edge(0,1,-1,0)
+
+	edges_3 = [e_1,e2_infinity,e_3,e_4,e_5]
+
+	new_edges = max_flow_alg(nodes_1, edges_3)
 
 	assert new_edges[0].flow == 10
 	assert new_edges[1].flow == 20
@@ -129,34 +157,6 @@ def test_max_flow():
 	assert new_edges[3].flow == 10
 	assert new_edges[4].flow == 20
 
-'''
-def test_max_flow_infinite():
-
-	e1_infinity = Edge(0,2,-1,0)
-
-	edges_2 = [e0,e1_infinity,e2,e3,e4]
-
-	new_edges = max_flow_alg(nodes_1, edges_2)
-
-	assert new_edges[0].flow == 10
-	assert new_edges[1].flow == 40
-	assert new_edges[2].flow == 30
-	assert new_edges[3].flow == 10
-	assert new_edges[4].flow == 20
-
-
-def test_max_flow_infinite2():
-	e0_infinity = Edge(0,1,-1,0)
-
-	edges_3 = [e0,e1,e2,e3,e4]
-
-	new_edges = max_flow_alg(nodes, edges_3)
-
-	assert new_edges[0].flow == 20
-	assert new_edges[1].flow == 20
-	assert new_edges[2].flow == 20
-	assert new_edges[3].flow == 0
-	assert new_edges[4].flow == 20
 
 def test_on_the_file1():
 	nodes, edges = parse_rail_file("../data/rail.txt")
@@ -174,7 +174,7 @@ def test_on_the_file1():
 	
 	assert flow_sum_org == flow_sum_des
 
-
+'''
 def test_on_the_file2():
 	nodes, edges = parse_rail_file("../data/rail.txt")
 	edges = max_flow_alg(nodes, edges)
