@@ -145,17 +145,7 @@ def bottleneck(nodes, edges, path):
     return max_throughput
 
 def min_cut(nodes, edges):
-    ''' the old
-    min_cut_edges = []
-    for node in nodes:
-        for nid, eid in node.related_edges.items():
-            #if not(edges[eid].to_node_id in a):
-            if edges[eid].flow == edges[eid].capacity:
-                min_cut_edges.append(edges[eid])
-
-    return min_cut_edges
-    #'''
-    a = set([len(nodes)-1])
+    a = set([0])
     queue = []
     queue.append(nodes[0])
     while queue:
@@ -163,36 +153,17 @@ def min_cut(nodes, edges):
         for nid, eid in cur_node.related_edges.items():
             # check if we are at max capacity
             if edges[eid].capacity == edges[eid].flow:
-  
                 continue
             if nid in a:
                 continue
+
             #if edges[eid].to_node_id == cur_node.id:
                 #if not(edges[eid].from_node_id in a):
                 #    queue.append(nodes[nid])
                 #    a.add(nid)
             #    continue
-            queue.append(nodes[nid])
             a.add(nid)
-    
-    ''' # this is the one for reverse .
-    
-    queue = []
-    queue.append(nodes[len(nodes)-1])
-    while queue:
-        cur_node = queue.pop(0)
-        for nid, eid in cur_node.related_edges.items():
-            # check if we are at max capacity
-            if edges[eid].capacity == edges[eid].flow:
-                continue
-            if nid in a:
-                continue
-            if edges[eid].from_node_id == cur_node.id:
-                continue
             queue.append(nodes[nid])
-            a.add(nid)
-    '''
-    print(a)
 
     min_cut_edges = []
     for nid in a:
@@ -200,9 +171,9 @@ def min_cut(nodes, edges):
         for nid, eid in cur_node.related_edges.items():
             ## change to from for the reverse
             #if not(edges[eid].from_node_id in a):
-            if not(edges[eid].node_id_1 in a):
-            #if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity:
-                min_cut_edges.append(edges[eid])
+            if not(edges[eid].node_id_2 in a) or not(edges[eid].node_id_1 in a):
+                if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity:
+                    min_cut_edges.append(edges[eid])
 
     return min_cut_edges
 

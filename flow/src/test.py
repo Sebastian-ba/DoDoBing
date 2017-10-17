@@ -172,17 +172,25 @@ def test_on_the_file1():
 
 	print("flow_sum for file: " + str(flow_sum_des))
 	
-	assert flow_sum_org == flow_sum_des
+	assert flow_sum_org == flow_sum_des  
+	assert flow_sum_org == 163
 
-'''
+
 def test_on_the_file2():
 	nodes, edges = parse_rail_file("../data/rail.txt")
 	edges = max_flow_alg(nodes, edges)
 	min_cut_edges = min_cut(nodes, edges)
 	print(len(min_cut_edges))
-	output(min_cut_edges)
-	# this is according to the out file from the data folder.
+	
+	cut_sum_flow = 0
+	cut_sum_capacity = 0
+	for edge in min_cut_edges:
+		cut_sum_flow += edge.flow
+		cut_sum_capacity += edge.capacity
+
+	# this is according to the readme file from the data folder.
+	assert cut_sum_flow == 163
+	assert cut_sum_capacity == cut_sum_flow
+
+	## the number of edges to cut in this test data should be 9
 	assert len(min_cut_edges) == 9
-
-
-#'''
