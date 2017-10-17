@@ -156,12 +156,6 @@ def min_cut(nodes, edges):
                 continue
             if nid in a:
                 continue
-
-            #if edges[eid].to_node_id == cur_node.id:
-                #if not(edges[eid].from_node_id in a):
-                #    queue.append(nodes[nid])
-                #    a.add(nid)
-            #    continue
             a.add(nid)
             queue.append(nodes[nid])
 
@@ -172,8 +166,10 @@ def min_cut(nodes, edges):
             ## change to from for the reverse
             #if not(edges[eid].from_node_id in a):
             if not(edges[eid].node_id_2 in a) or not(edges[eid].node_id_1 in a):
+
                 if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity:
                     min_cut_edges.append(edges[eid])
+
 
     return min_cut_edges
 
