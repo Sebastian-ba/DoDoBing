@@ -1,7 +1,5 @@
 '''Imports'''
 import sys
-#import re
-#import string
 
 '''Parse'''
 
@@ -54,7 +52,6 @@ def parse_rail_file(filename):
 '''Parse end'''
 
 '''Helper methods'''
-
 class Edge:
     def __init__(self, node_id_1, node_id_2, capacity, flow):
         self.node_id_1 = node_id_1
@@ -127,10 +124,7 @@ def get_full_path(path_dict, nid):
     return cur_path
 
 
-'''
-    returns the current maximum throughput on the given path.
-'''
-
+'''returns the current maximum throughput on the given path.'''
 def bottleneck(nodes, edges, path):
     # this is clearly positive infinity
     max_throughput = -1
@@ -152,9 +146,7 @@ def min_cut(nodes, edges):
         cur_node = queue.pop(0)
         for nid, eid in cur_node.related_edges.items():
             # check if we are at max capacity
-            if edges[eid].capacity == edges[eid].flow:
-                continue
-            if nid in a:
+            if edges[eid].capacity == edges[eid].flow or nid in a:
                 continue
             a.add(nid)
             queue.append(nodes[nid])
@@ -163,14 +155,8 @@ def min_cut(nodes, edges):
     for nid in a:
         cur_node = nodes[nid]
         for nid, eid in cur_node.related_edges.items():
-            ## change to from for the reverse
-            #if not(edges[eid].from_node_id in a):
             if not(edges[eid].node_id_2 in a) or not(edges[eid].node_id_1 in a):
-
-                if edges[eid].flow > 0 and edges[eid].flow == edges[eid].capacity:
-                    min_cut_edges.append(edges[eid])
-
-
+                min_cut_edges.append(edges[eid])
     return min_cut_edges
 
 
@@ -194,6 +180,8 @@ def augment(nodes, edges, path):
             edges[edge_id].flow += max_throughput
         else:
             #if edge is a backward edge, decrease the flow
+            print("reduce flow !", edge_id, max_throughput, path)
+
             edges[edge_id].flow -= max_throughput
     return edges
 
@@ -213,5 +201,4 @@ if __name__ == "__main__":
         edges = max_flow_alg(nodes, edges)
         min_cut_edges = min_cut(nodes, edges)
         output(min_cut_edges)
-
 '''END CODE'''

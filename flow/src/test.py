@@ -187,6 +187,7 @@ def test_on_the_file2():
 	for edge in min_cut_edges:
 		cut_sum_flow += edge.flow
 		cut_sum_capacity += edge.capacity
+		print(edge)
 
 	# this is according to the readme file from the data folder.
 	assert cut_sum_flow == 163
