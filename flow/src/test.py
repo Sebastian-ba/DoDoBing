@@ -40,7 +40,7 @@ t.addEdgeTo(3,4)
 
 n2.addEdgeTo(0,1)
 n2.addEdgeTo(3,2)
-n2.addEdgeTo(4,3)
+n2.addEdgeTo(1,3)
 
 n3.addEdgeTo(0,0)
 n3.addEdgeTo(2,2)
@@ -52,7 +52,7 @@ E = [e1,e2,e3,e4,e5]
 def test_augmentTest1():
 	res_edges = augment(nodes, edges, [0,1])
 	assert 5 == res_edges[0].capacity
-'''
+
 def test_augmentTest2():
 	res_edges = augment(nodes, edges, [0,1])
 	res = res_edges[0].flow
@@ -67,11 +67,11 @@ def test_bottleneckTest3():
 	res = bottleneck(N,E,[0,3,1])
 	assert 7 == res
 
-def test_bottleneckTest4():
+def test_bottleneckTest_infinity():
 	e_infinity = Edge(3,1,-1,5)
-	E = [e1,e2,e3,e_infinity,e5]
-	res = bottleneck(N,E,[0,3,1])
-	assert 7 == res
+	E_infinity_set = [e1,e2,e3,e_infinity,e5]
+	res = bottleneck(N,E_infinity_set,[0,2,1])
+	assert 20 == res
 
 def test_bottleneckTest5():
 	res = bottleneck(N,E,[0,2,1])
@@ -98,25 +98,25 @@ e3 = Edge(2,3,30,0)
 e4 = Edge(2,1,10,0)
 e5 = Edge(3,1,20,0)
 
-nodes = [s,t,n2,n3]
-edges = [e0,e1,e2,e3,e4]
+nodes_1 = [s,t,n2,n3]
+edges_1 = [e1,e2,e3,e4,e5]
 
 def test_max_flow():
-	new_edges = max_flow_alg(nodes, edges)
-
+	new_edges = max_flow_alg(nodes_1, edges_1)
 	assert new_edges[0].flow == 10
 	assert new_edges[1].flow == 20
 	assert new_edges[2].flow == 20
 	assert new_edges[3].flow == 0
 	assert new_edges[4].flow == 10
 
+'''
 def test_max_flow_infinite():
 
 	e1_infinity = Edge(0,2,-1,0)
 
 	edges_2 = [e0,e1_infinity,e2,e3,e4]
 
-	new_edges = max_flow_alg(nodes, edges_2)
+	new_edges = max_flow_alg(nodes_1, edges_2)
 
 	assert new_edges[0].flow == 10
 	assert new_edges[1].flow == 40
