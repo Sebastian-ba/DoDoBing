@@ -58,6 +58,10 @@ class Edge:
         self.node_id_2 = node_id_2
         self.capacity = capacity
         self.flow = flow
+        self.forward = True
+
+    def is_forward(self, node_id_1, node_id_2):
+        return self.node_id_1 == node_id_1 and self.node_id_2 == node_id_2
     
     def __str__(self):
         return str(self.node_id_1) + " " + str(self.node_id_2) + " " + str(self.capacity) + " " + str(self.flow)
@@ -131,11 +135,16 @@ def bottleneck(nodes, edges, path):
     for i in range(len(path)-1):
         edge_id = nodes[path[i]].related_edges[path[i +1]]
         capacity = edges[edge_id].capacity
+        flow = edges[edge_id].flow
         if capacity >= 0:
-            throughput = capacity - edges[edge_id].flow
+            if edges[edge_id].is_forward(path[i],path[i+1]):
+                throughput = capacity - flow
+            else: 
+                throughput = flow + capacity - flow
+                edges[edge_id].forward = False
+
             if throughput < max_throughput or max_throughput == -1:
                 max_throughput = throughput
-
     return max_throughput
 
 def min_cut(nodes, edges):
@@ -150,6 +159,17 @@ def min_cut(nodes, edges):
                 continue
             a.add(nid)
             queue.append(nodes[nid])
+
+    cur_node = nodes[26]
+  
+    b = set()
+    for nid in a:
+        cur_node = nodes[nid]
+        for nid, eid in cur_node.related_edges.items():
+            if not(edges[eid].node_id_1 in a):
+                b.add(nid)
+
+    a = a | b
 
     min_cut_edges = []
     for nid in a:
@@ -175,14 +195,15 @@ def augment(nodes, edges, path):
 
     for i in range(len(path) - 1):
         edge_id = nodes[path[i]].related_edges[path[i+1]]
-        if edges[edge_id].node_id_1 == path[i]:
+        if edges[edge_id].forward:
             #if edge is a forward edge then increase flow
             edges[edge_id].flow += max_throughput
         else:
-            #if edge is a backward edge, decrease the flow
-            print("reduce flow !", edge_id, max_throughput, path)
-
             edges[edge_id].flow -= max_throughput
+            edges[edge_id].forward = True
+            #if edge is a backward edge, decrease the flow
+            #edges[edge_id].flow = abs(edges[edge_id].flow - max_throughput)
+            
     return edges
 
 def max_flow_alg(nodes, edges):
