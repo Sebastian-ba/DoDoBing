@@ -159,8 +159,6 @@ def min_cut(nodes, edges):
                 continue
             a.add(nid)
             queue.append(nodes[nid])
-
-    cur_node = nodes[26]
   
     b = set()
     for nid in a:
