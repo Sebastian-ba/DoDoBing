@@ -154,7 +154,6 @@ def min_cut(nodes, edges):
     while queue:
         cur_node = queue.pop(0)
         for nid, eid in cur_node.related_edges.items():
-            # check if we are at max capacity
             if edges[eid].capacity == edges[eid].flow or nid in a:
                 continue
             a.add(nid)
@@ -194,13 +193,10 @@ def augment(nodes, edges, path):
     for i in range(len(path) - 1):
         edge_id = nodes[path[i]].related_edges[path[i+1]]
         if edges[edge_id].forward:
-            #if edge is a forward edge then increase flow
             edges[edge_id].flow += max_throughput
         else:
             edges[edge_id].flow -= max_throughput
             edges[edge_id].forward = True
-            #if edge is a backward edge, decrease the flow
-            #edges[edge_id].flow = abs(edges[edge_id].flow - max_throughput)
             
     return edges
 
