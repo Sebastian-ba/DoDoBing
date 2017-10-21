@@ -99,10 +99,6 @@ def get_valid_path(nodes, edges):
 
         cur_node = queue.pop(0)
         for nid, eid in cur_node.related_edges.items():
-
-            # check if we're going in the correct direction
-            #if edges[eid].node_id_1 == cur_node.id:
-            #    continue
             # check if we are at max capacity
             if (edges[eid].capacity - edges[eid].flow) == 0:
                 continue
@@ -125,6 +121,7 @@ def get_full_path(path_dict, nid):
         nid = path_dict[nid]
     cur_path.append(0)
     cur_path.reverse()
+    
     return cur_path
 
 
@@ -132,12 +129,12 @@ def get_full_path(path_dict, nid):
 def bottleneck(nodes, edges, path):
     # this is clearly positive infinity
     max_throughput = -1
-    for i in range(len(path)-1):
-        edge_id = nodes[path[i]].related_edges[path[i +1]]
+    for i in range(len(path) - 1):
+        edge_id = nodes[path[i]].related_edges[path[i + 1]]
         capacity = edges[edge_id].capacity
         flow = edges[edge_id].flow
         if capacity >= 0:
-            if edges[edge_id].is_forward(path[i],path[i+1]):
+            if edges[edge_id].is_forward(path[i],path[i + 1]):
                 throughput = capacity - flow
             else: 
                 throughput = flow + capacity - flow
