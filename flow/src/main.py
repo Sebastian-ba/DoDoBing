@@ -111,32 +111,28 @@ def optimized_valid_path(nodes, edges):
 
         # iterate all vertex edges
         for nid, eid in cur_node.related_edges.items():
-            # check correct direction
-            if edges[eid].to_node_id == cur_node.id:
-                continue
-            # sanity check if we're at max capacity
+            # sanity check if we are at max capacity
             if (edges[eid].capacity - edges[eid].flow) == 0:
                 continue
             # last node, the end
             if nid == (len(nodes) - 1):
                 path_steps[nid] = cur_node.id
                 return get_full_path(path_steps, nid)
-            # check if new node
+            # check if we visited node before
 
             # do we want to check if there is a better path in terms of node -> node capacity or should we just take them in the highest order no matter what?
             if visited_nodes[nid] == False:
                 # enqueue val, node
-                sorted_queue.append((edges[eid].capacity - edges[eid].flow,nodes[nid]))
+                sorted_queue.append((edges[eid].capacity - edges[eid].flow, nodes[nid]))
                 # sort list based on val in highest first order.
-                sorted(sorted_queue, key=lambda tup: tup[0], reverse=True)
+                sorted_queue = sorted(sorted_queue, key=lambda tup: tup[0], reverse=True)
                 path_steps[nid] = cur_node.id
                 visited_nodes[nid] = True
     return None
 
-
-
-
-''' BFS '''
+''' BFS 
+    Unused due to opt. BFS being implemented.
+'''
 def get_valid_path(nodes, edges):
     path_steps = {}
 
@@ -178,18 +174,6 @@ def get_full_path(path_dict, nid):
     cur_path.append(0)
     cur_path.reverse()
     return cur_path
-
-''' Traceback the valid path from a certain nid '''
-def get_full_path(path_dict, nid):
-    cur_path = []
-    while path_dict[nid] != None:
-        cur_path.append(nid)
-        nid = path_dict[nid]
-    cur_path.append(0)
-    cur_path.reverse()
-    
-    return cur_path
-
 
 '''returns the current maximum throughput on the given path.'''
 def bottleneck(nodes, edges, path):
@@ -263,8 +247,9 @@ def augment(nodes, edges, path):
             
     return edges
 
+
 def max_flow_alg(nodes, edges):
-    path = get_valid_path(nodes, edges)
+    path = optimized_valid_path(nodes, edges)
     while path:
         edges = augment(nodes, edges, path)
         path = optimized_valid_path(nodes, edges)
