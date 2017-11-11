@@ -47,7 +47,6 @@ def parse_red_file(filename):
                     continue
                 else:
                     parsing_edges = False
-
             if parsing_nodes:
                 node = line.split(' ')
                 red = (len(node) > 1)
@@ -57,9 +56,7 @@ def parse_red_file(filename):
                     parsing_nodes = False
                     parsing_edges = True
                 continue
-
     return (nodes,s,t, cardinality, total_nodes, total_edges)
-
 '''Parse end'''
 
 '''Helper methods'''
@@ -75,14 +72,10 @@ class Node:
         self.edges_out.add(node_id_string)
 
     def add_edge_in(self, node_id_string): 
-        self.edges_in.add(node_id_string)   
-    
-    def __str__(self):
-        pass
+        self.edges_in.add(node_id_string)
 
 def output(instance_name, nodes_len, a_res, f_res, m_res, n_res, s_res, latex):
-    instance_name = instance_name.replace(".txt","").replace("../data/","") 
-
+    instance_name = instance_name.replace(".txt","").replace("../data/","")
     res = "{:<20}".format(instance_name) + "|"
     res += "{:>8}".format(str(nodes_len)) + " |"
     res += "{:>6}".format(str(a_res)    ) + " |"
@@ -90,7 +83,6 @@ def output(instance_name, nodes_len, a_res, f_res, m_res, n_res, s_res, latex):
     res += "{:>6}".format(str(m_res)    ) + " |"
     res += "{:>6}".format(str(n_res)    ) + " |"
     res += "{:>6}".format(str(s_res)    )
-    
     if latex:
         return res.replace("|", "&")
     else:
@@ -115,14 +107,36 @@ def a(nodes, start_node_id, end_node_id, cardinality, total_edges):
                     visited.add(node_id)
     return False
 
-
-
-
-
-
 #few
 def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
-    return bfs_few(nodes, start_node_id, end_node_id)
+    visited = set([])
+    start_node = nodes[start_id]
+    count = 0 #Current amount of Red nodes visited before, for current path..
+    if start_node.red:
+        count = 1
+    end_node = nodes[end_id]
+    green_frontier = [start_node]
+    red_frontier = []
+    while green_frontier:
+        current_node = green_frontier.pop()
+        if current_node == end_node:
+            return count
+        for str_id in current_node.edges_out:
+            node = nodes[str_id]
+            if node.red:
+                if node not in red_frontier:
+                    red_frontier.append(node)
+            else:
+                if node not in green_frontier:
+                    green_frontier.append(node)
+        
+        visited.add(current_node)
+        if not green_frontier and red_frontier:
+            green_frontier = red_frontier
+            red_frontier = []
+            count += 1
+            
+    return -1
 
 class Path_node:
     def __init__(self, node_id, parent_path_node):
@@ -171,8 +185,6 @@ def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
         return maxLength
     else:
         return '-'
-                
-
 
 # None
 def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
@@ -274,35 +286,6 @@ def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 visited_nodes.add(node)
     return False
 
-def bfs_few(nodes, start_id, end_id):
-    visited = set([])
-    start_node = nodes[start_id]
-    count = 0 #Current amount of Red nodes visited before, for current path..
-    if start_node.red:
-        count = 1
-    end_node = nodes[end_id]
-    green_frontier = [start_node]
-    red_frontier = []
-    while green_frontier:
-        current_node = green_frontier.pop()
-        if current_node == end_node:
-            return count
-        for str_id in current_node.edges_out:
-            node = nodes[str_id]
-            if node.red:
-                if node not in red_frontier:
-                    red_frontier.append(node)
-            else:
-                if node not in green_frontier:
-                    green_frontier.append(node)
-        
-        visited.add(current_node)
-        if not green_frontier and red_frontier:
-            green_frontier = red_frontier
-            red_frontier = []
-            count += 1
-            
-    return -1
 '''Algorithm end'''
 
 '''RUN CODE'''
