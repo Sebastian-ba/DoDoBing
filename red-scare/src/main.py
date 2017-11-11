@@ -88,10 +88,46 @@ def output(instance_name, nodes_len, a_res, f_res, m_res, n_res, s_res, latex):
     else:
         return "|| " + res + " ||"
 
+class Path_node:
+    def __init__(self, node_id, parent_path_node):
+        self.node_id = node_id
+        self.parent_path_node = parent_path_node
+    
+    def in_path(self, new_node_id):
+        if new_node_id != self.node_id:
+            if self.parent_path_node == None: # Root
+                return False
+            return self.parent_path_node.in_path(new_node_id)
+        else:
+            return True
+    
+    def reds_in_path_counter(self, nodes,  count):
+        if nodes[self.node_id].red:
+            if self.parent_path_node == None: # Root
+                return count + 1 
+            return self.parent_path_node.reds_in_path_counter( nodes, count + 1)
+        else:
+            if self.parent_path_node == None: # Root
+                return count
+            return self.parent_path_node.reds_in_path_counter( nodes, count)
+    
+    def __str__(self):
+        if self.parent_path_node == None: # Root
+            return self.node_id
+        return self.node_id + " -- " + str(self.parent_path_node)
+
+''' Traceback the valid path from a certain nid, return length of path '''
+def get_full_path(path_dict, nid):
+    cur_path = []
+    while path_dict[nid] != None:
+        cur_path.append(nid)
+        nid = path_dict[nid]
+    return len(cur_path)
+
 '''Helper methods end'''
 
 '''Algorithm'''
-#altenate
+#alternate
 def a(nodes, start_node_id, end_node_id, cardinality, total_edges):
     visited = set([start_node_id])
     start_node = nodes[start_node_id]
@@ -135,36 +171,8 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
             green_frontier = red_frontier
             red_frontier = []
             count += 1
-            
-    return -1
 
-class Path_node:
-    def __init__(self, node_id, parent_path_node):
-        self.node_id = node_id
-        self.parent_path_node = parent_path_node
-    
-    def in_path(self, new_node_id):
-        if new_node_id != self.node_id:
-            if self.parent_path_node == None: # Root
-                return False
-            return self.parent_path_node.in_path(new_node_id)
-        else:
-            return True
-    
-    def reds_in_path_counter(self, nodes,  count):
-        if nodes[self.node_id].red:
-            if self.parent_path_node == None: # Root
-                return count + 1 
-            return self.parent_path_node.reds_in_path_counter( nodes, count + 1)
-        else:
-            if self.parent_path_node == None: # Root
-                return count
-            return self.parent_path_node.reds_in_path_counter( nodes, count)
-    
-    def __str__(self):
-        if self.parent_path_node == None: # Root
-            return self.node_id
-        return self.node_id + " -- " + str(self.parent_path_node)
+    return '-'
 
 #many
 def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
@@ -228,16 +236,6 @@ def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 path_steps[node] = cur_node
                 visited_nodes.add(node)
     return '-'
-
-''' Traceback the valid path from a certain nid, return length of path '''
-def get_full_path(path_dict, nid):
-    cur_path = []
-    while path_dict[nid] != None:
-        cur_path.append(nid)
-        nid = path_dict[nid]
-    # Append end node to make sure length is not (path-1) length
-    #cur_path.append("0")
-    return len(cur_path)
   
 #some
 def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
