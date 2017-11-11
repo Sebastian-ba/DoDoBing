@@ -146,11 +146,11 @@ def a(nodes, start_node_id, end_node_id, cardinality, total_edges):
 #few
 def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
     visited = set([])
-    start_node = nodes[start_id]
+    start_node = nodes[start_node_id]
     count = 0 #Current amount of Red nodes visited before, for current path..
     if start_node.red:
         count = 1
-    end_node = nodes[end_id]
+    end_node = nodes[end_node_id]
     green_frontier = [start_node]
     red_frontier = []
     while green_frontier:
