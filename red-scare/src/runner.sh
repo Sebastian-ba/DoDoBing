@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "instance name       | node_len| alter | few   | many  | none  | some"
 python main.py -i ../data/common-1-20.txt      -nsmfal
 python main.py -i ../data/common-1-50.txt      -nsmfal
