@@ -21,4 +21,4 @@ def test_increase_n8_2_some():
 (nodes_5, s5, t5, c5, n5, e5) = parse_red_file("../data/increase-n8-1.txt")
 def test_increase_n8_1_some():
     res = n(nodes_5,s5,t5,c5,e5)
-    assert res == '-'
+    assert res == 1
