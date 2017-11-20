@@ -42,7 +42,7 @@ python main.py -i ../data/gnm-2000-3000-0.txt  -nsalf
 python main.py -i ../data/gnm-2000-3000-1.txt  -nsalf
 python main.py -i ../data/gnm-2000-4000-0.txt  -nsalf
 python main.py -i ../data/gnm-2000-4000-1.txt  -nsalf
-python main.py -i ../data/gnm-3000-4500-0.txt  -nsmalf
+python main.py -i ../data/gnm-3000-4500-0.txt  -nsalf
 python main.py -i ../data/gnm-3000-4500-1.txt  -nsalf
 python main.py -i ../data/gnm-3000-6000-0.txt  -nsalf
 python main.py -i ../data/gnm-3000-6000-1.txt  -nsalf
@@ -50,8 +50,8 @@ python main.py -i ../data/gnm-4000-6000-0.txt  -nsalf
 python main.py -i ../data/gnm-4000-6000-1.txt  -nsalf
 python main.py -i ../data/gnm-4000-8000-0.txt  -nsalf
 python main.py -i ../data/gnm-4000-8000-1.txt  -nsalf
-python main.py -i ../data/gnm-5000-7500-0.txt  -nsmalf
-python main.py -i ../data/gnm-5000-7500-1.txt  -nsmalf
+python main.py -i ../data/gnm-5000-7500-0.txt  -nsalf
+python main.py -i ../data/gnm-5000-7500-1.txt  -nsalf
 python main.py -i ../data/gnm-5000-10000-0.txt -nsalf
 python main.py -i ../data/gnm-5000-10000-1.txt -nsalf
 python main.py -i ../data/grid-5-0.txt         -nsalf
