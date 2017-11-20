@@ -172,22 +172,21 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
             green_frontier = red_frontier
             red_frontier = []
             count += 1
-
+            
     return '-'
 
 #many
 def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
-    # Check if there is a path with some red vertex.
-    if not s(nodes, start_node_id, end_node_id, cardinality, total_edges):
-        # Check if there is a path with no red vertex.
-        if n(nodes, start_node_id, end_node_id, cardinality, total_edges) != '-':
-            return 0
-        else:
+    few_max = f(nodes, start_node_id, end_node_id, cardinality, total_edges)
+    if few_max == '-':
+        if n(nodes, start_node_id, end_node_id, cardinality, total_edges) == '-':
             return '-'
+        else:
+            return 0
 
+    max_length = few_max
 
     queue = [Path_node(start_node_id, None)]
-    maxLength = -1
     while len(queue) > 0:
         path_node = queue.pop()
         for node_id in nodes[path_node.node_id].edges_out:
@@ -197,12 +196,12 @@ def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
                     queue.append(new_path_node)
                 else:
                     length = new_path_node.reds_in_path_counter(nodes, 0)
-                    if length > maxLength:
-                        maxLength = length
-                        if maxLength == cardinality:
-                            return maxLength
-    if maxLength != -1:
-        return maxLength
+                    if length > max_length:
+                        max_length = length
+                        if max_length == cardinality:
+                            return max_length
+    if max_length != -1:
+        return max_length
     else:
         return '-'
 
