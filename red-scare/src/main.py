@@ -71,7 +71,7 @@ class Node:
     def add_edge_out(self, node_id_string):
         self.edges_out.add(node_id_string)
 
-    def add_edge_in(self, node_id_string): 
+    def add_edge_in(self, node_id_string):
         self.edges_in.add(node_id_string)
 
 def output(instance_name, nodes_len, a_res, f_res, m_res, n_res, s_res, latex):
@@ -92,7 +92,7 @@ class Path_node:
     def __init__(self, node_id, parent_path_node):
         self.node_id = node_id
         self.parent_path_node = parent_path_node
-    
+
     def in_path(self, new_node_id):
         if new_node_id != self.node_id:
             if self.parent_path_node == None: # Root
@@ -100,17 +100,17 @@ class Path_node:
             return self.parent_path_node.in_path(new_node_id)
         else:
             return True
-    
+
     def reds_in_path_counter(self, nodes,  count):
         if nodes[self.node_id].red:
             if self.parent_path_node == None: # Root
-                return count + 1 
+                return count + 1
             return self.parent_path_node.reds_in_path_counter( nodes, count + 1)
         else:
             if self.parent_path_node == None: # Root
                 return count
             return self.parent_path_node.reds_in_path_counter( nodes, count)
-    
+
     def __str__(self):
         if self.parent_path_node == None: # Root
             return self.node_id
@@ -166,7 +166,7 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 else:
                     if node not in green_frontier:
                         green_frontier.append(node)
-        
+
         visited.add(current_node)
         if not green_frontier and red_frontier:
             green_frontier = red_frontier
@@ -177,27 +177,33 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
 
 #many
 def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
-    if s(nodes, start_node_id, end_node_id, cardinality, total_edges): 
-        queue = [Path_node(start_node_id, None)]
-        maxLength = -1
-        while len(queue) > 0:
-            path_node = queue.pop()
-            for node_id in nodes[path_node.node_id].edges_out:
-                if not path_node.in_path(node_id):
-                    new_path_node = Path_node(node_id, path_node)
-                    if node_id != end_node_id:
-                        queue.append(new_path_node)
-                    else:
-                        length = new_path_node.reds_in_path_counter(nodes, 0)
-                        if length > maxLength:
-                            maxLength = length
-                            if maxLength == cardinality:
-                                return maxLength
-        if maxLength != -1:
-            return maxLength
+    # Check if there is a path with some red vertex.
+    if not s(nodes, start_node_id, end_node_id, cardinality, total_edges):
+        # Check if there is a path with no red vertex.
+        if n(nodes, start_node_id, end_node_id, cardinality, total_edges) != '-':
+            return 0
         else:
             return '-'
-    else: 
+
+
+    queue = [Path_node(start_node_id, None)]
+    maxLength = -1
+    while len(queue) > 0:
+        path_node = queue.pop()
+        for node_id in nodes[path_node.node_id].edges_out:
+            if not path_node.in_path(node_id):
+                new_path_node = Path_node(node_id, path_node)
+                if node_id != end_node_id:
+                    queue.append(new_path_node)
+                else:
+                    length = new_path_node.reds_in_path_counter(nodes, 0)
+                    if length > maxLength:
+                        maxLength = length
+                        if maxLength == cardinality:
+                            return maxLength
+    if maxLength != -1:
+        return maxLength
+    else:
         return '-'
 
 # None
@@ -240,8 +246,8 @@ def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 path_steps[node] = cur_node
                 visited_nodes.add(node)
     return '-'
-  
-#some
+
+# Some
 def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
     # steps dict
     path_steps = {}
@@ -312,7 +318,7 @@ if __name__ == "__main__":
 
     if args["none"]:
         n_res = n(nodes, start_node_id , end_node_id, cardinality, total_edges)
-    if args["some"]: 
+    if args["some"]:
         s_res = s(nodes, start_node_id , end_node_id, cardinality, total_edges)
     if args["many"]:
         m_res = m(nodes, start_node_id , end_node_id, cardinality, total_edges)
