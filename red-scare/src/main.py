@@ -277,15 +277,15 @@ def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 return True
 
             # Check if we didn't visit node before
-            if node not in visited_nodes:
-                # enqueue node
+            if node not in visited_nodes or (path_steps[node][1] < 1 and path_steps[cur_node][1] > 0):
+                # enqueue node and mark
                 queue.append(node)
+                visited_nodes.add(node)
                 # if node red
                 if nodes[node].red:
                     path_steps[node] = (cur_node, path_steps[cur_node][1] + 1)
                 else:
                     path_steps[node] = (cur_node, path_steps[cur_node][1])
-                visited_nodes.add(node)
     return False
 
 '''Algorithm end'''

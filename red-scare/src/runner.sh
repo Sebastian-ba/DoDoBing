@@ -38,7 +38,7 @@ python main.py -i ../data/gnm-1000-1500-0.txt  -nsalf
 python main.py -i ../data/gnm-1000-1500-1.txt  -nsalf
 python main.py -i ../data/gnm-1000-2000-0.txt  -nsalf
 python main.py -i ../data/gnm-1000-2000-1.txt  -nsalf
-python main.py -i ../data/gnm-2000-3000-0.txt  -nsmalf
+python main.py -i ../data/gnm-2000-3000-0.txt  -nsalf
 python main.py -i ../data/gnm-2000-3000-1.txt  -nsalf
 python main.py -i ../data/gnm-2000-4000-0.txt  -nsalf
 python main.py -i ../data/gnm-2000-4000-1.txt  -nsalf
