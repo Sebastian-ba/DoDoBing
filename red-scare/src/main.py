@@ -243,49 +243,19 @@ def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
   
 #some
 def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
-    # steps dict
-    path_steps = {}
-
-    # visited nodes tracker
-    visited_nodes = set([])
-
-    # nodes queue
-    queue = []
-
-    queue.append(start_node_id)
-
-    # empty start path, origin node has no before node (None)
-    # sanity check: if start node is red for some godforsaken reason
-    if nodes[start_node_id].red:
-        path_steps[start_node_id] = (None, 1)
-    else:
-        path_steps[start_node_id] = (None, 0)
-
-    visited_nodes.add(start_node_id)
-
-    while queue:
-        # dequeue firstmost node in queue
-        cur_node = queue.pop(0)
-
-        # iterate to all subnodes
-        for node in nodes[cur_node].edges_out:
-            # Last node, the end
-            # Check if we have at least one red node in path
-            # Or check if end node is red for some sanity reason
-            if node == end_node_id and (path_steps[cur_node][1] > 0 or nodes[node].red):
-                # return True - we have a path with at least one red node.
-                return True
-
-            # Check if we didn't visit node before
-            if node not in visited_nodes or (path_steps[node][1] < 1 and path_steps[cur_node][1] > 0):
-                # enqueue node and mark
-                queue.append(node)
-                visited_nodes.add(node)
-                # if node red
-                if nodes[node].red:
-                    path_steps[node] = (cur_node, path_steps[cur_node][1] + 1)
+    queue = [Path_node(start_node_id, None)]
+    minNodes = 0
+    while len(queue) > 0:
+        path_node = queue.pop()
+        for node_id in nodes[path_node.node_id].edges_out:
+            if not path_node.in_path(node_id):
+                new_path_node = Path_node(node_id, path_node)
+                if node_id != end_node_id:
+                    queue.append(new_path_node)
                 else:
-                    path_steps[node] = (cur_node, path_steps[cur_node][1])
+                    length = new_path_node.reds_in_path_counter(nodes, 0)
+                    if length > minNodes:
+                        return True
     return False
 
 '''Algorithm end'''
