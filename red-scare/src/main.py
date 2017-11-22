@@ -179,10 +179,7 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
 def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
     few_max = f(nodes, start_node_id, end_node_id, cardinality, total_edges)
     if few_max == '-':
-        if n(nodes, start_node_id, end_node_id, cardinality, total_edges) == '-':
-            return '-'
-        else:
-            return 0
+        return '-'
 
     max_length = few_max
 
@@ -200,10 +197,7 @@ def m(nodes, start_node_id, end_node_id, cardinality, total_edges):
                         max_length = length
                         if max_length == cardinality:
                             return max_length
-    if max_length != -1:
-        return max_length
-    else:
-        return '-'
+    return max_length
 
 # None
 def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
