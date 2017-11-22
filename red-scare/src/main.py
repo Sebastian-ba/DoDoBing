@@ -71,7 +71,7 @@ class Node:
     def add_edge_out(self, node_id_string):
         self.edges_out.add(node_id_string)
 
-    def add_edge_in(self, node_id_string): 
+    def add_edge_in(self, node_id_string):
         self.edges_in.add(node_id_string)
 
 def output(instance_name, nodes_len, a_res, f_res, m_res, n_res, s_res, latex):
@@ -92,25 +92,29 @@ class Path_node:
     def __init__(self, node_id, parent_path_node):
         self.node_id = node_id
         self.parent_path_node = parent_path_node
-    
+
     def in_path(self, new_node_id):
-        if new_node_id != self.node_id:
-            if self.parent_path_node == None: # Root
-                return False
-            return self.parent_path_node.in_path(new_node_id)
-        else:
-            return True
-    
+        pointer = self
+        while pointer != None:
+            if pointer.node_id == new_node_id:
+                return True
+
+            # Move pointer to parent.
+            pointer = pointer.parent_path_node
+
+        return False # Root
+
+
     def reds_in_path_counter(self, nodes,  count):
         if nodes[self.node_id].red:
             if self.parent_path_node == None: # Root
-                return count + 1 
+                return count + 1
             return self.parent_path_node.reds_in_path_counter( nodes, count + 1)
         else:
             if self.parent_path_node == None: # Root
                 return count
             return self.parent_path_node.reds_in_path_counter( nodes, count)
-    
+
     def __str__(self):
         if self.parent_path_node == None: # Root
             return self.node_id
@@ -130,8 +134,8 @@ def try_reduce(nodes, node_id, start_node_id, end_node_id):
 
     #1) If the current node does not have any edges out and is not t or s: remove.
     #2) If the current node has only one edge out and an one edge in from that same edge, remove.
-    #3) If the current node is not red and has one edge out and is not t or s, redirect in-edges to out-edge. 
-    #4) If the current node is not red and has two edges in from two different nodes and has two edges out to two different nodes that are the same as the in-nodes, then point the in-node and out-node to each other. 
+    #3) If the current node is not red and has one edge out and is not t or s, redirect in-edges to out-edge.
+    #4) If the current node is not red and has two edges in from two different nodes and has two edges out to two different nodes that are the same as the in-nodes, then point the in-node and out-node to each other.
 
     if node_id != start_node_id and node_id != end_node_id:
         current_node = nodes[node_id]
@@ -186,7 +190,7 @@ def try_reduce(nodes, node_id, start_node_id, end_node_id):
                 try_reduce(nodes, o_0, start_node_id, end_node_id)
                 try_reduce(nodes, o_1, start_node_id, end_node_id)
 
-                        
+
 
 def reduce_graph(nodes, start_node_id, end_node_id):
     for node in nodes:
@@ -237,7 +241,7 @@ def f(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 else:
                     if node not in green_frontier:
                         green_frontier.append(node)
-        
+
         visited.add(current_node)
         if not green_frontier and red_frontier:
             green_frontier = red_frontier
@@ -308,7 +312,7 @@ def n(nodes, start_node_id, end_node_id, cardinality, total_edges):
                 path_steps[node] = cur_node
                 visited_nodes.add(node)
     return '-'
-  
+
 #some
 def s(nodes, start_node_id, end_node_id, cardinality, total_edges):
     # steps dict
@@ -387,7 +391,7 @@ if __name__ == "__main__":
     reduce_graph(nodes, start_node_id, end_node_id)
 
 
-    if args["some"]: 
+    if args["some"]:
         s_res = s(nodes, start_node_id , end_node_id, cardinality, total_edges)
     if args["many"]:
         m_res = m(nodes, start_node_id , end_node_id, cardinality, total_edges)
