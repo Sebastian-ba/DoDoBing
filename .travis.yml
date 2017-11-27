@@ -21,3 +21,4 @@ script:
   - nosetests -vd -w red-scare/src test_some.py
   - nosetests -vd -w red-scare/src test_few.py
   - nosetests -vd -w red-scare/src test_alternate.py
+  - nosetests -vd -w red-scare/src test_reduce.py

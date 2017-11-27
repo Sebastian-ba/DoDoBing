@@ -2,6 +2,10 @@
 [![Build Status](https://travis-ci.org/Sebastian-ba/DoDoBing.svg?branch=fix-build)](https://travis-ci.org/Sebastian-ba/DoDoBing)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2bef561e297d481da9944daf4f6dd2e2)](https://www.codacy.com/app/Sebastian-ba/DoDoBing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sebastian-ba/DoDoBing&amp;utm_campaign=Badge_Grade)
 
+![DoDo](http://www.nhm.ac.uk/content/dam/nhmwww/our-science/news/2017/dodo-model-news-two-column.jpg "DoDo")
+
+![Bing](https://mymerrychristmas.com/x/wp-content/uploads/2015/10/bingcrosby.jpg "Bing")
+
 ### Requirements
 
 - python 3.x
