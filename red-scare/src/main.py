@@ -105,14 +105,16 @@ class Path_node:
         return False # Root
 
     def reds_in_path_counter(self, nodes,  count):
-        if nodes[self.node_id].red:
-            if self.parent_path_node == None: # Root
-                return count + 1
-            return self.parent_path_node.reds_in_path_counter( nodes, count + 1)
-        else:
-            if self.parent_path_node == None: # Root
-                return count
-            return self.parent_path_node.reds_in_path_counter( nodes, count)
+        pointer = self
+        counter = 0
+        while pointer != None:
+            if nodes[pointer.node_id].red:
+                counter += 1
+                
+            # Move pointer to parent.
+            pointer = pointer.parent_path_node
+
+        return counter
 
     def __str__(self):
         if self.parent_path_node == None: # Root
